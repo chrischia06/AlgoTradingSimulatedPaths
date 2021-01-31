@@ -21,6 +21,7 @@ cs = zeros(N, d);
 % cache backtestresults
 strategy_returns  = zeros(N, T);
 max_drawdowns  = zeros(T, 1);
+max_drawdown_duration = zeros(T, 1);
 
 
 % backtest on simulated dataa
@@ -37,15 +38,20 @@ for i = 1:N
     sim_obj = MarketSimulator(T,s0,model_params);
 
     % Run strategy on environment
-    sim_obj = momentum(sim_obj);
+    sim_obj = exponential_gradient(sim_obj);
     strategy_returns(i,:) = sim_obj.r_hist;
-    max_drawdowns(i) = maxdrawdown(1 + sim_obj.r_hist);
+    [max_drawdowns(i), idx] = maxdrawdown(cumprod(1 + sim_obj.r_hist));
+    max_drawdown_duration(i) = idx(2) - idx(1);
 end
 
 % Max Drawdowns
 figure('Name',"Distribution of Maximum Drawdowns")
 histogram(max_drawdowns,100)
 title('Maximum Drawdown Distribution')
+
+figure('Name',"Distribution of Maximum Drawdown Duration")
+histogram(max_drawdown_duration,100)
+title('Maximum Drawdown Duration Distribution')
 
 % . Efficient Frontier - Return v Std Deviation
 figure('Name','Efficient Frontier')
@@ -70,9 +76,10 @@ mean_sharpe = mean(mean_strat ./ stds);
 skew_sharpe = skewness(mean_strat ./ stds);
 std_sharpe = std(mean_strat ./ stds);
 kurtosis_sharpe = kurtosis(mean_strat ./ stds);
+% calmar_ratio = mean_strat ./ max_drawdowns
 title('Sharpe Ratio Distribution')
 
-[mean_sharpe skew_sharpe std_sharpe kurtosis_sharpe]
+[mean_sharpe std_sharpe skew_sharpe kurtosis_sharpe median(max_drawdowns)]
 toc
 
 %% diagnosis for a single run of the strat
@@ -103,3 +110,6 @@ figure('Name','Portfolio Comulative Growth');
 clf();
 plot(1:T,sim_obj.R_hist-1);
 title('Portfolio Cumulative Growth')
+
+%%
+rets = diff(log(sim_obj.s_hist),1,2);
