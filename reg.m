@@ -1,4 +1,4 @@
-function simObj = cvar(simObj)
+function simObj = reg(simObj)
     simObj.reset(); % reset simulation environment
     for i=1:simObj.T
        if i <= 30
