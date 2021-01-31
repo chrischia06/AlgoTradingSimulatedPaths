@@ -39,6 +39,8 @@ Backtesting trading strategies on simulated data in MATLAB
 
 + https://hudsonthames.org/introducing-online-portfolio-selection/
 
++ https://hudsonthames.org/online-portfolio-selection-mean-reversion/
+
 + https://www.danielppalomar.com/mafs5310---portfolio-optimization-with-r-fall-2020-21.html
 
 + https://palomar.home.ece.ust.hk/MAFS5310_lectures/slides_backtesting.pdf
