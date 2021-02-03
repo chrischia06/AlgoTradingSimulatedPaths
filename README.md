@@ -26,6 +26,7 @@ Backtesting trading strategies on simulated data in MATLAB
 + [Advances in Financial Machine Learning, Marcos Lopez De Prado (2018)](https://www.amazon.co.uk/Advances-Financial-Machine-Learning-Marcos/dp/1119482089) - Chapter 13, 14, 16
 + [Machine Learning for Asset Managers, Marcos Lopez De Prado (2020)](https://www.amazon.co.uk/Machine-Learning-Managers-Elements-Quantitative/dp/1108792898)
 + [MFE Financial Econometrics Notes, Kevin Sheppard (2020)](https://www.kevinsheppard.com/teaching/mfe/notes/)
++ [Machine Learning for Factor Investing](http://www.mlfactor.com/backtest.html) - Chapter 5 (Penalised Regression), 12 (Portfolio Backtesting)
 
 #### Backtesting and Synthetic Data
 + https://reasonabledeviations.com/notes/adv_fin_ml/
@@ -54,9 +55,7 @@ Backtesting trading strategies on simulated data in MATLAB
 
 + Genetic Algorithms https://github.com/tradytics/eiten/blob/master/strategies/genetic_algo_strategy.py
 
-+ [Online Portfolio Selection: A Survey, Li, Hoi (2012)](https://arxiv.org/pdf/1212.2129.pdf
-
-)
++ [Online Portfolio Selection: A Survey, Li, Hoi (2012)](https://arxiv.org/pdf/1212.2129.pdf)
 
 
 #### Using Machine Learning
