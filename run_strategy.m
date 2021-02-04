@@ -6,7 +6,7 @@ tic;
 rng(2021);
 
 % number of runs
-N = 1000;
+N = 100;
 
 % Market Model Parameters
 % **Clarifications to T, d from Slack Channel
@@ -54,6 +54,8 @@ for i = 1:N
     
     % cache returns, maximum drawdown, and max drawdown duration
     strategy_returns(i,:) = sim_obj.r_hist;
+    
+    % max drawdown, duration for 1 path
     [max_drawdowns(i), idx] = maxdrawdown(sim_obj.R_hist);
     max_drawdown_duration(i) = idx(2) - idx(1);
 end
@@ -100,7 +102,7 @@ toc
 %% diagnosis for a single run of the strat
 
 % Plot simulated price history
-figure('Name','Stock Price Evoltuion');
+figure('Name','Stock Price Evolution');
 clf();
 plot(1:(T+1),sim_obj.s_hist);
 title('Stock Price Evolution')
@@ -121,10 +123,15 @@ hold off;
 title('Portfolio 1-Period-Return Evolution')
 
 % Plot portfolio cumulative growth
-figure('Name','Portfolio Comulative Growth');
+figure('Name','Portfolio Total Return');
 clf();
 plot(1:T,sim_obj.R_hist-1);
-title('Portfolio Cumulative Growth')
+title('Portfolio Total Return')
 
-%%
-% rets = diff(log(sim_obj.s_hist),1,2);
+% drawdown profile
+drawdown_profile = zeros(T, 1);
+for i = 2:T
+    drawdown_profile(i) = max(sim_obj.R_hist(1:i,:)) - sim_obj.R_hist(i);
+end
+figure('Name','Drawdown Profile')
+plot(1:T, drawdown_profile)
