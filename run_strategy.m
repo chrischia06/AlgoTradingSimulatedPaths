@@ -5,9 +5,6 @@ tic;
 % seed
 rng(2021);
 
-% number of runs
-N = 1000;
-
 % Market Model Parameters
 % **Clarifications to T, d from Slack Channel
 T = 500; % time horizon
@@ -17,13 +14,8 @@ Mrank = floor(0.25*d); % rank of cov
 s0 = 100*ones(d,1); % intial asset prices
     
 % cache mus (drift), cs (transaction proportion)
-mus = zeros(N, d);
-cs = zeros(N, d);
-
-% cache backtest results
-strategy_returns  = zeros(N, T);
-max_drawdowns  = zeros(N, 1);
-max_drawdown_duration = zeros(N, 1);
+mus = zeros(d,1);
+cs = zeros(d,1);
 
 % efficient frontier plot
 % current = mean_strat(1);
@@ -37,70 +29,41 @@ max_drawdown_duration = zeros(N, 1);
 % end
 
 % backtest on simulated data
-for i = 1:N
-    % provided code to generate low rank matrix
-    [U,S,V] = svd( randn(d,d) );
-    diagM = diag( [ normrnd(0,1,Mrank,1) ; zeros(d-Mrank,1) ] );
-    M = 5e-3 * U * diagM * V'; % Randomly generated matrix of rank Mrank
-    mus(i, :) = 2e-5 * normrnd(0,1,d,1).^2; % drift
-    cs(i, :) = 1e-8 * normrnd(0,1,d,1).^2; % market impact; non-negative
 
-    % Initialize Simulation Environment
-    model_params = struct('mu', mus(i,:), 'M', M,'c',cs(i, :),'eta',eta);
-    sim_obj = MarketSimulator(T,s0,model_params);
+% provided code to generate low rank matrix
+[U,S,V] = svd( randn(d,d) );
+diagM = diag( [ normrnd(0,1,Mrank,1) ; zeros(d-Mrank,1) ] );
+M = 5e-3 * U * diagM * V'; % Randomly generated matrix of rank Mrank
+mus = 2e-5 * normrnd(0,1,d,1).^2; % drift
+cs = 1e-8 * normrnd(0,1,d,1).^2; % market impact; non-negative
 
-    % Run strategy on environment
-    sim_obj = one_over_n(sim_obj);
-    
-    % cache returns, maximum drawdown, and max drawdown duration
-    strategy_returns(i,:) = sim_obj.r_hist;
-    [max_drawdowns(i), idx] = maxdrawdown(sim_obj.R_hist);
-    max_drawdown_duration(i) = idx(2) - idx(1);
-end
+% Initialize Simulation Environment
+model_params = struct('mu', mus, 'M', M,'c',cs,'eta',eta);
+sim_obj = MarketSimulator(T,s0,model_params);
+lambda = 1:0.1:10 ; % risk aversion parameter
 
-% Max Drawdowns
-figure('Name',"Distribution of Maximum Drawdowns")
-histogram(max_drawdowns,100)
-title('Maximum Drawdown Distribution')
+%% Run Strategy for EDA
+sim_obj = one_over_n(sim_obj, lambda(1));
+% % for illustration, I added lambda as input variable in one_over_n function
+% % it's just a filler now
+% % our eventual strategy function should take sim_obj and lambda as inputs
+% % and use both
+% % i'm using the same variable name for this section and the next
+% % so only run one at a time
+% cache cumulative returns, daily returns
 
-figure('Name',"Distribution of Maximum Drawdown Duration")
-histogram(max_drawdown_duration,100)
-title('Maximum Drawdown Duration Distribution')
+return_cum = sim_obj.R_hist;
+return_daily = sim_obj.r_hist;
 
-% . Efficient Frontier - Return v Std Deviation
-figure('Name','Efficient Frontier')
-mean_strat = mean(strategy_returns, 2);
-% plot(cumsum(mus) ./ (1:(size(mus,1)))')
-stds = std(strategy_returns, 0, 2);
-scatter(stds, mean_strat);
-grid on;
-xlabel("Std Deviation");
-ylabel("Mean Return");
-title('Monte Carlo Efficient Frontier')
+% summary stats
+return_mean = mean(return_daily);
+stds = std(return_daily, 0);
+strat_sharpe = sharpe(return_daily,0);
+max_drawdown = maxdrawdown(return_cum);
 
-% Strategy Returns
-figure('Name', 'Cumulative Strategy Returns')
-plot(cumsum(strategy_returns))
-title('Cumulative Strategy Returns')
-
-% Distribution of Sharpe Ratio
-figure('Name', 'Sharpe Ratio')
-histogram(mean_strat ./ stds,100);
-mean_sharpe = mean(mean_strat ./ stds);
-skew_sharpe = skewness(mean_strat ./ stds);
-std_sharpe = std(mean_strat ./ stds);
-kurtosis_sharpe = kurtosis(mean_strat ./ stds);
-% calmar_ratio = mean_strat ./ max_drawdowns
-title('Sharpe Ratio Distribution')
-
-% sample moments of Sharpe Distribution
-[mean_sharpe std_sharpe skew_sharpe kurtosis_sharpe median(max_drawdowns)]
-toc
-
-%% diagnosis for a single run of the strat
-
+%% Plots for EDA
 % Plot simulated price history
-figure('Name','Stock Price Evoltuion');
+figure('Name','Stock Price Evolution');
 clf();
 plot(1:(T+1),sim_obj.s_hist);
 title('Stock Price Evolution')
@@ -121,10 +84,41 @@ hold off;
 title('Portfolio 1-Period-Return Evolution')
 
 % Plot portfolio cumulative growth
-figure('Name','Portfolio Comulative Growth');
+figure('Name','Portfolio Total Return');
 clf();
-plot(1:T,sim_obj.R_hist-1);
-title('Portfolio Cumulative Growth')
+plot(1:T,return_cum);
+title('Portfolio Total Return')
 
-%%
-% rets = diff(log(sim_obj.s_hist),1,2);
+% Plot: drawdown profile
+drawdown = zeros(T,1);
+for i=1:T
+   drawdown(i) = return_cum(i) - max(return_cum(1:i));
+end
+figure('Name', 'Drawdown Profile')
+clf()
+plot(drawdown)
+
+% %% Plot efficient frontier (for future use) 
+% 
+% l = size(lambda,2)
+% sim_obj_2 = MarketSimulator(T,s0,model_params);
+% 
+% % Initialize summary stats
+% return_mean_series = zeros(l,1);
+% std_series = zeros(l,1);
+% 
+% % Run strategy over grid of lambdas
+% for i = 1:l
+%     sim_obj_2 = one_over_n(sim_obj_2, lambda(i));
+%     return_mean_series(i) = mean(sim_obj_2.r_hist);
+%     std_series(i) = std(sim_obj_2.r_hist, 0);
+% end
+% 
+% % Plot efficient frontier
+% figure('Name', 'Efficient Frontier')
+% scatter(std_series, return_mean_series);
+% grid on;
+% xlabel("Std Deviation");
+% ylabel("Mean Return");
+% title('Efficient Frontier')
+
