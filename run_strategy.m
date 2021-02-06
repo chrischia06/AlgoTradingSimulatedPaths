@@ -6,7 +6,7 @@ tic;
 rng(2021);
 
 % number of runs
-N = 100;
+N = 500;
 
 % Market Model Parameters
 % **Clarifications to T, d from Slack Channel
@@ -50,7 +50,7 @@ for i = 1:N
     sim_obj = MarketSimulator(T,s0,model_params);
 
     % Run strategy on environment
-    sim_obj = one_over_n(sim_obj);
+    sim_obj = reg(sim_obj);
     
     % cache returns, maximum drawdown, and max drawdown duration
     strategy_returns(i,:) = sim_obj.r_hist;
@@ -135,3 +135,6 @@ for i = 2:T
 end
 figure('Name','Drawdown Profile')
 plot(1:T, drawdown_profile)
+
+% frequently-used : log returns
+% log_returns = diff(log(sim_obj.s_hist),1,2);
