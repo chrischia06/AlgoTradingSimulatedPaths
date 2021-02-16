@@ -50,7 +50,7 @@ for i = 1:N
     sim_obj = MarketSimulator(T,s0,model_params);
 
     % Run strategy on environment
-    sim_obj = reg(sim_obj);
+    sim_obj = pca_optimisation(sim_obj);
     
     % cache returns, maximum drawdown, and max drawdown duration
     strategy_returns(i,:) = sim_obj.r_hist;
@@ -127,14 +127,6 @@ figure('Name','Portfolio Total Return');
 clf();
 plot(1:T,sim_obj.R_hist-1);
 title('Portfolio Total Return')
-
-% drawdown profile
-drawdown_profile = zeros(T, 1);
-for i = 2:T
-    drawdown_profile(i) = max(sim_obj.R_hist(1:i,:)) - sim_obj.R_hist(i);
-end
-figure('Name','Drawdown Profile')
-plot(1:T, drawdown_profile)
 
 % frequently-used : log returns
 % log_returns = diff(log(sim_obj.s_hist),1,2);

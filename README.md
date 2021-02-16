@@ -1,15 +1,17 @@
-
-
 Backtesting trading strategies on simulated data in MATLAB
+
+Contributors: [Sandra Ng](https://github.com/sandrangying), [Pearl Yuan](https://github.com/ZiningYuan) and [Chris Chia](https://github.com/chrischia06)
 
 <!-- Cloned from : https://github.com/SIAM-FM21-PC/MathWorks -->
 
 ### Experiments
-+ Simple Momentum. Define some metric for momentum (Z-Score, MA), and assign weights based on this. `momentum.m`
-+ Time Series Momentum: Use Gaussian Processes, Deep Neural Networks to forecast returns, and weight accordingly.
-+  Hierarchial Risk parity (Clustering). Group together the assets, then assign weights to the groups (and then the assets in each group) `hiearchial.m`
-+ Clustering + Momentum
-+ Portfolio Optimisation with other risk measures; `mean_variance.m`
+
+We can broadly characterise potential strategies into the following kinds.
+ 
++ 'Simple' Momentum. Define some metric for momentum (Z-Score, MA), and assign weights based on this. This is in a sense 'model-free' momentum. Example: `momentum.m`
++ Time Series/Model-based Momentum: Use Gaussian Processes, Deep Neural Networks to forecast returns, and weight accordingly.
++ Risk-parity based Portfolio Optimisation. Portfolio optimisation with other risk measures than just the covariance matrix. Example: `mean_variance.m`. Another example is *Hierarchial Risk Parity* , which involves clustering - group together the assets, then assign weights to the groups (and then the assets in each group). Example:  `hierarchial.m`
+
 + Reinforcement Learning
 
 
@@ -75,6 +77,12 @@ Backtesting trading strategies on simulated data in MATLAB
 
 + Machine Learning and Portfolio Optimization http://www.optimization-online.org/DB_FILE/2014/11/4625.pdf
 
++ Recipe For Quantitative Trading With Machine Learning (2020)
+
+#### Stochastic Portfolio Theory
++ Stochastic Portfolio Theory:A Machine Learning Perspective: https://arxiv.org/pdf/1605.02654.pdf
++ https://quantdare.com/stochastic-portfolio-theory-revisited/
++ Fernholz, R., Karatzas, I. https://www.math.columbia.edu/~ik/FernKarSPT.pdf
 
 #### Hierarchial Risk Parity related
 + The Hierarchical Equal Risk Contribution Portfolio https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3237540
@@ -114,4 +122,12 @@ Backtesting trading strategies on simulated data in MATLAB
 + Looked into online portfolio selection articles from Hudson and Thames, which is in turn based on [Li, Hoi (2012), Online Portfolio Selection: A Survey](https://arxiv.org/pdf/1212.2129.pdf)
 + Tried using Hierarchial Risk Parity using code from the [MATLAB website](https://uk.mathworks.com/matlabcentral/fileexchange/70186-asset-allocation-hierarchical-risk-parity). This is the best performing strategy so far, in terms of Mean Sharpe.
 
+**04/02/2021**
++ Meeting to discuss approach. Sandra suggested restricing simulations to `N = 1`, and then varying risk-aversion parameter lambda.
 
+**06/02/2021**
++ Testing Lasso based momentum
+
+**16/02/2021**
++ Tried CVaR based portfolio optimisation based on : [this](https://pyportfolioopt.readthedocs.io/en/latest/EfficientFrontier.html?highlight=CVaR#id4), and [this](https://github.com/portfolio-optimization-hx/portfolio_optimization), which are in turn based on the paper: [Rockafellar, R.; Uryasev, D. (2001). Optimization of conditional value-at-risk](https://pyportfolioopt.readthedocs.io/en/latest/EfficientFrontier.html?highlight=CVaR&fbclid=IwAR01aak1B8ai-FcvZJVm3Y4eGFboIqaRi50MgQO_pJ9ynTZId3X4URG9Yxg#id4)
++ Added working PCA-based portfolio optimisation
