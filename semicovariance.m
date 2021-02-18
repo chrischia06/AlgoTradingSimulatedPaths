@@ -1,4 +1,4 @@
-function simObj = mean_variance(simObj)
+function simObj = semicovariance(simObj)
     simObj.reset(); % reset simulation environment
     %% general
     % mean variance / minimum variance portfolio
@@ -16,29 +16,23 @@ function simObj = mean_variance(simObj)
     % Graphical Lasso?
     %% Incorporating mean; Black-Litterman
     % Should estimated mean return be incorporated at all?
-    %% Univariate 
-    % CVaR
     %% multivariate volatility models
     % ccc_mvgarch, dcc, rarch, gogarch, PCA/Factor
     % Don't really seem to work
     %%
     rebalancing_periods = max(simObj.T / 5, 10);
-    options = optimset('Display', 'off',...
-                       'Algorithm','interior-point-convex');
-    max_weight = 1;
-    min_weight = 0;
+    options = optimset('Display', 'off');
     warmup = 100;
-    
-    % min 0.5 w^{T}Hw + f^{t} w , Aw <= . b, Aeqw = beq, lb<= w <= ub
     for i=1:simObj.T
         if i < warmup
             w_const = ones(simObj.d,1)/simObj.d;
         else
             if mod(i, rebalancing_periods) == 0
-                rets = diff(log(simObj.s_hist(:,1:i)),1,2);
-                rets = rets - mean(rets,2);
+                rets = diff(log(simObj.s_hist(:,1:i)),1,2)';
+%                 rets = rets - mean(rets,2);
+                semicovariance = cov(rets .* (rets < mean(rets, 2)));
                 % H, f, A, b, Aeq, beq, lb, ub
-                w_const = quadprog(corr(rets' * 100), [], [], [],...
+                w_const = quadprog(semicovariance * 100, [], [], [],...
                                ones(1, simObj.d), 1,...
                                0.9 / simObj.d * ones(1,simObj.d),...
                                1.1 / simObj.d * ones(1,simObj.d),w_const, options);

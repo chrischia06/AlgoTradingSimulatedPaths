@@ -12,7 +12,7 @@ function simObj = cvar_optimisation(simObj,lambda)
     beta = 0.99; % 1 - CVaR level
     rebalancing_periods = max(simObj.T / 5, 10);
     for i=1:simObj.T
-        if i <= warmup
+        if i < warmup
             w_const = ones(simObj.d,1)/simObj.d;
         elseif mod(i, rebalancing_periods) == 0
             rets = diff(log(simObj.s_hist(:,1:i)),1,2);

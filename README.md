@@ -59,6 +59,12 @@ We can broadly characterise potential strategies into the following kinds.
 
 + [Online Portfolio Selection: A Survey, Li, Hoi (2012)](https://arxiv.org/pdf/1212.2129.pdf)
 
++ [Adaptive Bayesian Optimisation for Online Portfolio Selection (2015)](https://www.robots.ox.ac.uk/~sjrob/Pubs/NyikosaOsborneRobertsNipsBayesopt2015.pdf)
+
++ [Portfolio Allocation for Bayesian Optimization](https://www.cs.ubc.ca/~nando/papers/uaiBayesOpt.pdf)
+
++ [Portfolio AllocationFrom QP to ML Optimization Algorithms (2019)](http://www.thierry-roncalli.com/download/QP-ML-Portfolio-Optimization.pdf)
+
 
 #### Using Machine Learning
 + https://discovery.ucl.ac.uk/id/eprint/1474136/1/PhDThesis_ToyinAwoye.pdf

@@ -1,10 +1,10 @@
-function simObj = reg(simObj, lambda)
+function simObj = classification(simObj, lambda)
     if nargin < 2
         lambda = 0.5;
     end
     %% Time Series Momentum
-    % Use a time series model - Lasso, Ridge, ElasticNet
-    % and predict each assets next-step returns, and weight accordingly
+    % Use Logistic Regression to predict Y_{t + 1} > 0 for each asset
+    % Weight accordingly based on wP(Y_{t + 1} > 0)
     simObj.reset(); % reset simulation environment
     w_const = ones(simObj.d,1)/simObj.d;
     warmup = 50;
@@ -20,16 +20,15 @@ function simObj = reg(simObj, lambda)
             Xt = log_returns(:,i-1)';
             for j=1:simObj.d
                 % predict each next-step return one by one
-                y = log_returns(j,2:(i - 1))';
+                y = log_returns(j,2:(i - 1))' > 0;
                 % model.predict
-                [B,FitInfo] = lasso(Xs,y,'Lambda', lambda);
-                w_const(j) = Xt * B + FitInfo.Intercept;
+                Mdl = fitclinear(Xs, y, 'ScoreTransform','logit', 'Lambda', lambda);
+                [~, posterior] = predict(Mdl, Xt);
+                w_const(j) = posterior(:,2);
+                
             end
-            w_const = simObj.s_cur .* exp(w_const);
             w_const = w_const ./ sum(w_const);
-       end
-       % weight assets by hat(S_{t+1}^{i}) / sum(hat(S_{t + 1}^{i}))
-       
+       end       
        simObj.step(w_const);
     end
 end

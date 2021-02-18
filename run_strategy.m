@@ -1,12 +1,12 @@
 clear;
 close all hidden;
-tic;
 
 % seed
 rng(2021);
 
 % number of runs
 N = 500;
+% N = 1; % for testing
 
 % Market Model Parameters
 % **Clarifications to T, d from Slack Channel
@@ -25,17 +25,7 @@ strategy_returns  = zeros(N, T);
 max_drawdowns  = zeros(N, 1);
 max_drawdown_duration = zeros(N, 1);
 
-% efficient frontier plot
-% current = mean_strat(1);
-% path = [1];
-% temp = sortrows([stds mean_strat]);
-% for i=1:N
-%     if temp(i,2) > current
-%         current = temp(i, 2);
-%         path = [path ; i];
-%     end
-% end
-
+tic;
 % backtest on simulated data
 for i = 1:N
     % provided code to generate low rank matrix
@@ -59,6 +49,8 @@ for i = 1:N
     [max_drawdowns(i), idx] = maxdrawdown(sim_obj.R_hist);
     max_drawdown_duration(i) = idx(2) - idx(1);
 end
+running_time = toc;
+%% Metrics
 
 % Max Drawdowns
 figure('Name',"Distribution of Maximum Drawdowns")
@@ -96,8 +88,12 @@ kurtosis_sharpe = kurtosis(mean_strat ./ stds);
 title('Sharpe Ratio Distribution')
 
 % sample moments of Sharpe Distribution
-[mean_sharpe std_sharpe skew_sharpe kurtosis_sharpe median(max_drawdowns)]
-toc
+
+stats = [mean_sharpe std_sharpe skew_sharpe kurtosis_sharpe ...
+ median(max_drawdowns) median(max_drawdown_duration) running_time]
+latex(vpa(stats,3))
+% could add CVaR, VaR
+
 
 %% diagnosis for a single run of the strat
 
