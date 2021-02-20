@@ -40,7 +40,7 @@ for i = 1:N
     sim_obj = MarketSimulator(T,s0,model_params);
 
     % Run strategy on environment
-    sim_obj = pca_optimisation(sim_obj);
+    sim_obj = mad_optimisation(sim_obj);
     
     % cache returns, maximum drawdown, and max drawdown duration
     strategy_returns(i,:) = sim_obj.r_hist;

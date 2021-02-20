@@ -65,6 +65,8 @@ We can broadly characterise potential strategies into the following kinds.
 
 + [Portfolio AllocationFrom QP to ML Optimization Algorithms (2019)](http://www.thierry-roncalli.com/download/QP-ML-Portfolio-Optimization.pdf)
 
++ [C. Yin , R. Perchet & F. Soupé (2021): A practical guide to robust portfolio optimization, Quantitative Finance (2021)](https://www.tandfonline.com/doi/pdf/10.1080/14697688.2020.1849780?needAccess=true)
+	+ Uncertainty in the estimates of mean returns.
 
 #### Using Machine Learning
 + https://discovery.ucl.ac.uk/id/eprint/1474136/1/PhDThesis_ToyinAwoye.pdf
