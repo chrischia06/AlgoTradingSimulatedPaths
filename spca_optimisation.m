@@ -21,14 +21,13 @@ function simObj = spca_optimisation(simObj, lambda)
             errors = rets - B * pcs;
             Omega = diag(mean(errors.^2, 2)); 
             estim_cov = B * (pcs * pcs') * B' + Omega;
-            rets_mean = mean(rets, 2)';
-            size(rets_mean)
+            mean_rets = mean(rets, 2)';
             % H (cov), f (expected returns), A , b (Ax < b),
             % Aeq, beq (Aeq x = beq), m lb, ub (lb < x < ub), x0
             % the optimisation problem is
             % argmin_{w} 0.5 w^{T}Hw + f w , Aw = b
-            % so f = -2E[R] / lambda
-            w_const = quadprog(estim_cov, -2 * rets_mean, [],[],...
+            % so f = -1E[R] / 2lambda
+            w_const = quadprog(estim_cov, -1/(2 * lambda) * mean_rets, [],[],...
                 ones(1, simObj.d), 1,...
                 zeros(1, simObj.d), ones(1, simObj.d),...
                 w_const, options);

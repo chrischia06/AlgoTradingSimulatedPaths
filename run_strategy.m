@@ -1,6 +1,8 @@
 clear;
 close all hidden;
 
+description = "price weighted, lambda = 0.1, warmup 0, rebalancing freq = 10";
+
 % seed
 rng(2021);
 
@@ -28,8 +30,6 @@ max_drawdown_duration = zeros(N, 1);
 tic;
 % backtest on simulated data
 
-description = "mean-correlation matrix quadratic optimisation";
-
 for i = 1:N
     % provided code to generate low rank matrix
     [U,S,V] = svd( randn(d,d) );
@@ -43,8 +43,8 @@ for i = 1:N
     sim_obj = MarketSimulator(T,s0,model_params);
 
     % Run strategy on environment
-    sim_obj = mean_variance(sim_obj);
-    
+    sim_obj = price_weighted(sim_obj);
+        
     % cache returns, maximum drawdown, and max drawdown duration
     strategy_returns(i,:) = sim_obj.r_hist;
     
@@ -53,48 +53,74 @@ for i = 1:N
     max_drawdown_duration(i) = idx(2) - idx(1);
 end
 running_time = toc;
+
 %% Metrics
 
 % Max Drawdowns
 figure('Name',"Distribution of Maximum Drawdowns")
 histogram(max_drawdowns,100)
+grid on;
 title('Maximum Drawdown Distribution')
 
 figure('Name',"Distribution of Maximum Drawdown Duration")
 histogram(max_drawdown_duration,100)
+grid on;
 title('Maximum Drawdown Duration Distribution')
 
 % . Efficient Frontier - Return v Std Deviation
 figure('Name','Efficient Frontier')
 mean_strat = mean(strategy_returns, 2);
-% plot(cumsum(mus) ./ (1:(size(mus,1)))')
 stds = std(strategy_returns, 0, 2);
+
+% plot(cumsum(mus) ./ (1:(size(mus,1)))')
+[vals, idx] = sortrows([mean_strat stds], 2);
+best = [];
+temp = 0;
+for j = 1:length(vals)
+    if vals(j, 1) > temp
+        temp = vals(j, 1);
+        best = [best j];
+    end
+end
 scatter(stds, mean_strat);
+hold on;
+plot([0 ; vals(best,2)], [0 ; vals(best,1)])
 grid on;
 xlabel("Std Deviation");
 ylabel("Mean Return");
+yline(0, 'r--')
 title('Monte Carlo Efficient Frontier')
 
 % Strategy Returns
 figure('Name', 'Cumulative Strategy Returns')
 plot(cumsum(strategy_returns))
+grid on;
 title('Cumulative Strategy Returns')
 
 % Distribution of Sharpe Ratio
 figure('Name', 'Sharpe Ratio')
 histogram(mean_strat ./ stds,100);
+grid on;
+title('Sharpe Ratio Distribution')
+
 mean_sharpe = mean(mean_strat ./ stds);
 skew_sharpe = skewness(mean_strat ./ stds);
 std_sharpe = std(mean_strat ./ stds);
 kurtosis_sharpe = kurtosis(mean_strat ./ stds);
 % calmar_ratio = mean_strat ./ max_drawdowns
-title('Sharpe Ratio Distribution')
+
 
 % sample moments of Sharpe Distribution
 
+filename = 'logs/' + description + ' ' + string(datetime(now,'ConvertFrom','datenum')) + '.txt';
 stats = [mean_sharpe std_sharpe skew_sharpe kurtosis_sharpe ...
- median(max_drawdowns) median(max_drawdown_duration) running_time]
-latex(vpa(stats,3))
+ median(max_drawdowns) median(max_drawdown_duration) running_time,...
+ mean(strategy_returns(:,T)), var(strategy_returns(:,T))];
+% write output results
+stats_table = array2table(stats,'VariableNames',{'Mean','Std','Skew', 'Skurtosis',...
+                  'Median Max Drawdown','Median Max Drawdown Duration', 'Time',...
+                  'Mean RT', 'Var RT'})
+writetable(stats_table, filename);
 % could add CVaR, VaR
 
 
@@ -102,41 +128,37 @@ latex(vpa(stats,3))
 
 % Plot simulated price history
 figure('Name','Stock Price Evolution');
-clf();
 plot(1:(T+1),sim_obj.s_hist);
+grid on;
 title('Stock Price Evolution')
 
 % Plot portfolio weights
 figure('Name','Portfolio Weight Evolution');
-clf();
 plot(1:T,sim_obj.w_hist);
+grid on;
 title('Portfolio Weight Evolution')
 
 % Plot portfolio 1-period returns + mean
 figure('Name','Portfolio 1-Period-Return Evolution');
-clf();
 hold on;
 plot(1:T,sim_obj.r_hist);
-plot(1:T,ones(1,T) * mean(sim_obj.r_hist))
+yline(0, 'r-')
 hold off;
+grid on;
 title('Portfolio 1-Period-Return Evolution')
 
 % Plot portfolio cumulative growth
 figure('Name','Portfolio Total Return');
-clf();
 plot(1:T,sim_obj.R_hist-1);
+grid on;
 title('Portfolio Total Return')
 
 % frequently-used : log returns
-% log_returns = diff(log(sim_obj.s_hist),1,2); N x T
+log_returns = diff(log(sim_obj.s_hist),1,2); %N x T
 % running mean - cumsum(log_returns,2) ./ (1:T)
 % plot((cumsum(log_returns,2) ./  (1:T))')
 
-% write output results
-filename = 'logs/' + description + ' ' + string(datetime(now,'ConvertFrom','datenum')) + '.txt';
-stats_table = array2table(stats,'VariableNames',{'Mean','Std','Skew', 'Skurtosis',...
-                  'Median Max Drawdown','Median Max Drawdown Duration', 'Time'});
-writetable(stats_table, filename);
+
 % fileID = fopen(filename,'a+');
 % nbytes = fprintf(fileID,'%s\n',description);
 % fclose(fileID);

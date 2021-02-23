@@ -141,3 +141,17 @@ We can broadly characterise potential strategies into the following kinds.
 **16/02/2021**
 + Tried CVaR based portfolio optimisation based on : [this](https://pyportfolioopt.readthedocs.io/en/latest/EfficientFrontier.html?highlight=CVaR#id4), and [this](https://github.com/portfolio-optimization-hx/portfolio_optimization), which are in turn based on the paper: [Rockafellar, R.; Uryasev, D. (2001). Optimization of conditional value-at-risk](https://pyportfolioopt.readthedocs.io/en/latest/EfficientFrontier.html?highlight=CVaR&fbclid=IwAR01aak1B8ai-FcvZJVm3Y4eGFboIqaRi50MgQO_pJ9ynTZId3X4URG9Yxg#id4)
 + Added working PCA-based portfolio optimisation
+
+**22/02/2021: Summarised comments from Albina**
+
++ The stock price model will never generate stocks with trend reversal
++ On this model, cVaR optimisation identifies stocks with negative price trend and takes their weights to 0. Has the potential to be volatile -- may not necessarily maximise our quadratic utility function
++ Two contradicting considerations:
+	+ Varying lambda is about diversification; higher lambda --> should invest in greater number of stocks
+	+ Square root market impact function --> should invest in smaller number of stocks. Given two highly correlated stocks, should only invest in one of them. In particular, if lambda is high, we might also want to also invest in stocks with negative drift
++ She would try: PCA but use lasso regression to restrict the number of stocks included in the PC1, then do standard Markowitz on the representative assets
++ Alternative (extension): quadratic utility function is first order of power utility function. Power utility --> solve via dynamic programming is faster solution than Markowitz (by Mark Davis from Imperial)
+
+**23/02/2021**
+
++ Slight refactor of codebase

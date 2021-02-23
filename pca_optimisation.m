@@ -4,8 +4,8 @@ function simObj = pca_optimisation(simObj)
     simObj.reset(); % reset simulation environment
     rebalancing_periods = max(simObj.T / 5, 10);
     options = optimset('Display', 'off');
-    warmup = 50;
-    k = 2; % number of factors
+    warmup = 100;
+    k = 5; % number of factors
     for i=1:simObj.T
         if i < warmup
             w_const = ones(simObj.d,1)/simObj.d;
@@ -18,6 +18,9 @@ function simObj = pca_optimisation(simObj)
                 estim_cov = ws(1:k,:)' * (pcs(:,1:k)' * pcs(:,1:k)) * ws(1:k,:) + Omega;
                 % H (cov), f (expected returns), A , b (Ax < b),
                 % Aeq, beq (Aeq x = beq), m lb, ub (lb < x < ub), x0
+                % max E[R] - lambda Var[R_t] = max 1/ 2lambda [] - 1/2
+                % Var[R_t];min 1/2 Var[R_t] - 1/2lambda mean_rets
+                mean_rets = mean(rets, 2);
                 w_const = quadprog(estim_cov, [], [], [],...
                                ones(1, simObj.d), 1,...
                                zeros(1, simObj.d),...
