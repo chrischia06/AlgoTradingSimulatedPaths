@@ -1,13 +1,13 @@
 clear;
 close all hidden;
 
-description = "price weighted, lambda = 0.1, warmup 0, rebalancing freq = 10";
+description = "one_over_n, 1000 runs test";
 
 % seed
 rng(2021);
 
 % number of runs
-N = 500;
+N = 500; 
 % N = 1; % for testing
 
 % Market Model Parameters
@@ -43,7 +43,7 @@ for i = 1:N
     sim_obj = MarketSimulator(T,s0,model_params);
 
     % Run strategy on environment
-    sim_obj = price_weighted(sim_obj);
+    sim_obj = one_over_n(sim_obj);
         
     % cache returns, maximum drawdown, and max drawdown duration
     strategy_returns(i,:) = sim_obj.r_hist;
@@ -157,8 +157,3 @@ title('Portfolio Total Return')
 log_returns = diff(log(sim_obj.s_hist),1,2); %N x T
 % running mean - cumsum(log_returns,2) ./ (1:T)
 % plot((cumsum(log_returns,2) ./  (1:T))')
-
-
-% fileID = fopen(filename,'a+');
-% nbytes = fprintf(fileID,'%s\n',description);
-% fclose(fileID);
