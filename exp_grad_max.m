@@ -1,12 +1,12 @@
 function [simObj] = exp_grad_max(simObj)
     % https://hudsonthames.org/online-portfolio-selection-momentum/
     % Regularization algorithm: Expectation maximisation
-    
+
     simObj.reset(); % reset simulation environment
     w_const = ones(simObj.d,1)/simObj.d; % equal weighted portfolio vector
     lr = 0.5; % learning rate; find a way to optimize this
     x_t = ones(simObj.d, simObj.T); % initialize price relative S_t / S_{t-1}
-    
+
     for i=1:simObj.T
         if i==1
             simObj.step(w_const);
@@ -19,4 +19,4 @@ function [simObj] = exp_grad_max(simObj)
             simObj.step(w_const);
         end
     end
-end
+end 

@@ -41,7 +41,7 @@ classdef MarketSimulator < handle
             obj.M = M;
         end
         obj.eta = paramStruct.eta;
-        % Run a first reset
+        % Run a first reset to allocate memory
         obj = obj.reset();
       end
       function obj = reset(obj)
@@ -71,10 +71,10 @@ classdef MarketSimulator < handle
          % Update weight-related state variables
          obj.w_cur = w;
          obj.w_hist(:,obj.t) = obj.w_cur;
-         if obj.t==0
+         if obj.t==1
              w_delta = 0;
          else
-             w_delta = obj.w_cur - obj.w_hist(:,obj.t);
+             w_delta = obj.w_cur - obj.w_hist(:,obj.t-1);
          end
          % Generate stock-price increments and calculate stock return
          xi_cur = normrnd(0,1,obj.d,1);

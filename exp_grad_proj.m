@@ -1,12 +1,12 @@
 function [simObj] = exp_grad_proj(simObj)
     % https://hudsonthames.org/online-portfolio-selection-momentum/
     % Regularization algorithm: Gradient Projection
-    
+
     simObj.reset(); % reset simulation environment
     w_const = ones(simObj.d,1)/simObj.d; % equal weighted portfolio vector
     lr = 0.5; % learning rate; find a way to optimize this
     x_t = ones(simObj.d, simObj.T); % initialize price relative S_t / S_{t-1}
-    
+
     for i=1:simObj.T
         if i==1
             simObj.step(w_const);

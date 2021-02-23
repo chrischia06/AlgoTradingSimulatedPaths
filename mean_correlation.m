@@ -1,4 +1,4 @@
-function simObj = mean_variance(simObj)
+function simObj = mean_correlation(simObj)
     simObj.reset(); % reset simulation environment
     %% general
     % mean variance / minimum variance portfolio
@@ -41,7 +41,7 @@ function simObj = mean_variance(simObj)
                 rets = rets - mean(rets,2);
                 mean_rets = mean(rets,2);
                 % H, f, A, b, Aeq, beq, lb, ub
-                w_const = quadprog(cov(rets' * 100), -2 * mean_rets, [], [],...
+                w_const = quadprog(corr(rets' * 100), -2 * mean_rets, [], [],...
                                ones(1, simObj.d), 1,...
                                min_weight * ones(1,simObj.d),...
                                max_weight * ones(1,simObj.d),w_const, options);

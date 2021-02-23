@@ -7,19 +7,21 @@ function simObj = hierarchial(simObj)
     % https://uk.mathworks.com/help/stats/hierarchical-clustering-12.htm
     % https://uk.mathworks.com/matlabcentral/fileexchange/70186-asset-allocation-hierarchical-risk-parity
     simObj = simObj.reset(); % reset simulation environment
-    w_const = ones(simObj.d,1)/simObj.d; % equal weighted portfolio vector
-    W = 5;
-    freq = 10;
+     % equal weighted portfolio vector
+    freq = 30;
+    warmup = 30;
     for i=1:simObj.T
-        if mod(i, freq) == 0
-            rets = diff(log(simObj.s_hist(:,1:i)),1,2);
-            assetCovar = cov(rets');
-            wgtHRP = allocByBisectHRP(assetCovar);
-            w_const = wgtHRP;
-            w_const = w_const ./ sum(w_const);
-            simObj = simObj.step(w_const);
+        if i < warmup
+            w_const = ones(simObj.d,1)/simObj.d;
         else
-            simObj = simObj.step(w_const);
+            if mod(i, freq) == 0
+                rets = diff(log(simObj.s_hist(:,1:i)),1,2);
+                assetCovar = corr(rets');
+                wgtHRP = allocByBisectHRP(assetCovar);
+                w_const = wgtHRP;
+                w_const = w_const ./ sum(w_const);
+            end
         end
+        simObj = simObj.step(w_const)   ;
     end
 end

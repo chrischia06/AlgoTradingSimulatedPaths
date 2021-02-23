@@ -1,5 +1,3 @@
-
-
 Backtesting trading strategies on simulated data in MATLAB
 
 Contributors: [Sandra Ng](https://github.com/sandrangying), [Pearl Yuan](https://github.com/ZiningYuan) and [Chris Chia](https://github.com/chrischia06)
@@ -61,6 +59,16 @@ We can broadly characterise potential strategies into the following kinds.
 
 + [Online Portfolio Selection: A Survey, Li, Hoi (2012)](https://arxiv.org/pdf/1212.2129.pdf)
 
++ [Adaptive Bayesian Optimisation for Online Portfolio Selection (2015)](https://www.robots.ox.ac.uk/~sjrob/Pubs/NyikosaOsborneRobertsNipsBayesopt2015.pdf)
+
++ [Portfolio Allocation for Bayesian Optimization](https://www.cs.ubc.ca/~nando/papers/uaiBayesOpt.pdf)
+
++ [Portfolio AllocationFrom QP to ML Optimization Algorithms (2019)](http://www.thierry-roncalli.com/download/QP-ML-Portfolio-Optimization.pdf)
+
++ [C. Yin , R. Perchet & F. Soupé (2021): A practical guide to robust portfolio optimization, Quantitative Finance (2021)](https://www.tandfonline.com/doi/pdf/10.1080/14697688.2020.1849780?needAccess=true)
+	+ Uncertainty in the estimates of mean returns.
+
++ [Performance-based regularizationinmean-CVaR portfolio optimization (2018)](https://arxiv.org/pdf/1111.2091.pdf)
 
 #### Using Machine Learning
 + https://discovery.ucl.ac.uk/id/eprint/1474136/1/PhDThesis_ToyinAwoye.pdf
@@ -79,6 +87,12 @@ We can broadly characterise potential strategies into the following kinds.
 
 + Machine Learning and Portfolio Optimization http://www.optimization-online.org/DB_FILE/2014/11/4625.pdf
 
++ Recipe For Quantitative Trading With Machine Learning (2020)
+
+#### Stochastic Portfolio Theory
++ Stochastic Portfolio Theory:A Machine Learning Perspective: https://arxiv.org/pdf/1605.02654.pdf
++ https://quantdare.com/stochastic-portfolio-theory-revisited/
++ Fernholz, R., Karatzas, I. https://www.math.columbia.edu/~ik/FernKarSPT.pdf
 
 #### Hierarchial Risk Parity related
 + The Hierarchical Equal Risk Contribution Portfolio https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3237540
@@ -120,3 +134,24 @@ We can broadly characterise potential strategies into the following kinds.
 
 **04/02/2021**
 + Meeting to discuss approach. Sandra suggested restricing simulations to `N = 1`, and then varying risk-aversion parameter lambda.
+
+**06/02/2021**
++ Testing Lasso based momentum
+
+**16/02/2021**
++ Tried CVaR based portfolio optimisation based on : [this](https://pyportfolioopt.readthedocs.io/en/latest/EfficientFrontier.html?highlight=CVaR#id4), and [this](https://github.com/portfolio-optimization-hx/portfolio_optimization), which are in turn based on the paper: [Rockafellar, R.; Uryasev, D. (2001). Optimization of conditional value-at-risk](https://pyportfolioopt.readthedocs.io/en/latest/EfficientFrontier.html?highlight=CVaR&fbclid=IwAR01aak1B8ai-FcvZJVm3Y4eGFboIqaRi50MgQO_pJ9ynTZId3X4URG9Yxg#id4)
++ Added working PCA-based portfolio optimisation
+
+**22/02/2021: Summarised comments from Albina**
+
++ The stock price model will never generate stocks with trend reversal
++ On this model, cVaR optimisation identifies stocks with negative price trend and takes their weights to 0. Has the potential to be volatile -- may not necessarily maximise our quadratic utility function
++ Two contradicting considerations:
+	+ Varying lambda is about diversification; higher lambda --> should invest in greater number of stocks
+	+ Square root market impact function --> should invest in smaller number of stocks. Given two highly correlated stocks, should only invest in one of them. In particular, if lambda is high, we might also want to also invest in stocks with negative drift
++ She would try: PCA but use lasso regression to restrict the number of stocks included in the PC1, then do standard Markowitz on the representative assets
++ Alternative (extension): quadratic utility function is first order of power utility function. Power utility --> solve via dynamic programming is faster solution than Markowitz (by Mark Davis from Imperial)
+
+**23/02/2021**
+
++ Slight refactor of codebase
