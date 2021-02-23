@@ -11,7 +11,7 @@ function simObj = pca_optimisation(simObj)
             w_const = ones(simObj.d,1)/simObj.d;
         else
             if mod(i, rebalancing_periods) == 0
-                rets = diff(log(simObj.s_hist(:,1:i)),1,k);
+                rets = diff(log(simObj.s_hist(:,1:i)),1,2);
                 [ws, pcs] =pca(rets');
                 errors = rets' - (pcs(:,1:k) * ws(1:k,:));
                 Omega = diag(mean(errors.^2));

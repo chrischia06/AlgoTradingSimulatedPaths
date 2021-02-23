@@ -68,6 +68,8 @@ We can broadly characterise potential strategies into the following kinds.
 + [C. Yin , R. Perchet & F. Soupé (2021): A practical guide to robust portfolio optimization, Quantitative Finance (2021)](https://www.tandfonline.com/doi/pdf/10.1080/14697688.2020.1849780?needAccess=true)
 	+ Uncertainty in the estimates of mean returns.
 
++ [Performance-based regularizationinmean-CVaR portfolio optimization (2018)](https://arxiv.org/pdf/1111.2091.pdf)
+
 #### Using Machine Learning
 + https://discovery.ucl.ac.uk/id/eprint/1474136/1/PhDThesis_ToyinAwoye.pdf
 

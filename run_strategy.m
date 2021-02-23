@@ -13,7 +13,7 @@ N = 500;
 T = 500; % time horizon
 d = 50; % assets
 eta = 0.0002; % market impact
-Mrank = floor(0.25*d); % rank of cov
+Mrank = floor(0.25*d); % rank   of cov
 s0 = 100*ones(d,1); % intial asset prices
     
 % cache mus (drift), cs (transaction proportion)
@@ -27,6 +27,9 @@ max_drawdown_duration = zeros(N, 1);
 
 tic;
 % backtest on simulated data
+
+description = "mean-correlation matrix quadratic optimisation";
+
 for i = 1:N
     % provided code to generate low rank matrix
     [U,S,V] = svd( randn(d,d) );
@@ -40,7 +43,7 @@ for i = 1:N
     sim_obj = MarketSimulator(T,s0,model_params);
 
     % Run strategy on environment
-    sim_obj = mad_optimisation(sim_obj);
+    sim_obj = mean_variance(sim_obj);
     
     % cache returns, maximum drawdown, and max drawdown duration
     strategy_returns(i,:) = sim_obj.r_hist;
@@ -125,4 +128,15 @@ plot(1:T,sim_obj.R_hist-1);
 title('Portfolio Total Return')
 
 % frequently-used : log returns
-% log_returns = diff(log(sim_obj.s_hist),1,2);
+% log_returns = diff(log(sim_obj.s_hist),1,2); N x T
+% running mean - cumsum(log_returns,2) ./ (1:T)
+% plot((cumsum(log_returns,2) ./  (1:T))')
+
+% write output results
+filename = 'logs/' + description + ' ' + string(datetime(now,'ConvertFrom','datenum')) + '.txt';
+stats_table = array2table(stats,'VariableNames',{'Mean','Std','Skew', 'Skurtosis',...
+                  'Median Max Drawdown','Median Max Drawdown Duration', 'Time'});
+writetable(stats_table, filename);
+% fileID = fopen(filename,'a+');
+% nbytes = fprintf(fileID,'%s\n',description);
+% fclose(fileID);
