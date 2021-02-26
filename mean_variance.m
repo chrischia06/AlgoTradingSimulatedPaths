@@ -1,4 +1,4 @@
-function simObj = mean_variance(simObj)
+function simObj = mean_variance(simObj, lambda)
     simObj.reset(); % reset simulation environment
     %% general
     % mean variance / minimum variance portfolio
@@ -22,13 +22,15 @@ function simObj = mean_variance(simObj)
     % ccc_mvgarch, dcc, rarch, gogarch, PCA/Factor
     % Don't really seem to work
     %%
+    if nargin < 2
+        lambda = 0.5;
+    end
     rebalancing_periods = max(simObj.T / 5, 10);
     options = optimset('Display', 'off',...
                        'Algorithm','interior-point-convex');
-    max_weight = 1;
-    min_weight = 0;
-%     max_weight = 1.1 / simObj.d ;
-%     min_weight = 0.9 / simObj.d * 
+
+    max_weight = 1.1 / simObj.d;
+    min_weight = 0.9 / simObj.d;
     warmup = 100;
     
     % min 0.5 w^{T}Hw + f^{t} w , Aw <= . b, Aeqw = beq, lb<= w <= ub
@@ -38,10 +40,11 @@ function simObj = mean_variance(simObj)
         else
             if mod(i, rebalancing_periods) == 0
                 rets = diff(log(simObj.s_hist(:,1:i)),1,2);
-                rets = rets - mean(rets,2);
+
                 mean_rets = mean(rets,2);
                 % H, f, A, b, Aeq, beq, lb, ub
-                w_const = quadprog(cov(rets' * 100), -2 * mean_rets, [], [],...
+                % w E[R] - lambda wCw; 1/2lambdaE[R] - lambda w Cw
+                w_const = quadprog(cov(rets'), -1/ (2 * lambda) * mean_rets, [], [],...
                                ones(1, simObj.d), 1,...
                                min_weight * ones(1,simObj.d),...
                                max_weight * ones(1,simObj.d),w_const, options);
