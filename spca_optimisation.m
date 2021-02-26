@@ -7,8 +7,8 @@ function simObj = spca_optimisation(simObj, lambda)
     simObj.reset(); % reset simulation environment
     options = optimset('Display','Off');
     warmup = 100;
-    k=1; % no. of sparse PCs
-    stop = floor(lambda * simObj.d/20); % no. of non-zero variables in PC 
+    k=2; % no. of sparse PCs
+    stop = floor(0.5 * simObj.d + (lambda/20)*0.25*simObj.d); % no. of non-zero variables in PC 
     % key is to find optimal way to set stop as a function of lambda
     
     for i = 1:simObj.T
