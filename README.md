@@ -4,6 +4,22 @@ Contributors: [Sandra Ng](https://github.com/sandrangying), [Pearl Yuan](https:/
 
 <!-- Cloned from : https://github.com/SIAM-FM21-PC/MathWorks -->
 
+### Code References
+
+Sjöstrand, K., Clemmensen, L., Larsen, R., Einarsson, G., & Ersbøll, B. (2018). SpaSM: A MATLAB Toolbox for Sparse Statistical Modeling. Journal of Statistical Software, 84(10), 1 - 37. doi:http://dx.doi.org/10.18637/jss.v084.i10
+
++ https://www.jstatsoft.org/article/view/v084i10
+
+Ledoit, O. and Wolf, M.
+Quadratic shrinkage for lage covariance matrices.
+
++ https://www.econ.uzh.ch/en/people/faculty/wolf/publications.html#9
+
+ Asset Allocation - Hierarchical Risk Parity 
+
++ https://uk.mathworks.com/matlabcentral/fileexchange/70186-asset-allocation-hierarchical-risk-parity
+
+
 ### Experiments
 
 We can broadly characterise potential strategies into the following kinds.
@@ -69,6 +85,8 @@ We can broadly characterise potential strategies into the following kinds.
 	+ Uncertainty in the estimates of mean returns.
 
 + [Performance-based regularizationinmean-CVaR portfolio optimization (2018)](https://arxiv.org/pdf/1111.2091.pdf)
+
++ [Portfolio construction through handcrafting: motivating, article (2018)](https://qoppac.blogspot.com/2018/12/portfolio-construction-through.html)
 
 #### Using Machine Learning
 + https://discovery.ucl.ac.uk/id/eprint/1474136/1/PhDThesis_ToyinAwoye.pdf
