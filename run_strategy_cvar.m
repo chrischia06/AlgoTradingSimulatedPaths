@@ -3,7 +3,7 @@ close all hidden;
 %% Model and Simulator Initialization 
 
 % Initialize Model Parameters
-T = 250;
+T = 500;
 d = 50;
 eta = 0.0002;
 
@@ -94,7 +94,7 @@ title('Portfolio Total Return')
 % loss_values = array2table(loss_value, 'VariableNames', string(lambda))
 
 %% How do the results vary with Beta? 
-% nsims = 30;
+% nsims = 50;
 % beta = 0.5:0.05:0.95;
 % 
 % stds = zeros(1, size(beta,2));
@@ -120,6 +120,7 @@ title('Portfolio Total Return')
 % plot(beta, stds)
 % xlabel('Beta')
 % ylabel('Stds')
+% ylim([2.5/10^3, 4.5/10^3])
 % 
 % figure('Name', 'Mean Return vs Beta')
 % plot(beta, mean_strat)
@@ -128,7 +129,7 @@ title('Portfolio Total Return')
 
 %% How do the results vary with rebalancing frequency?
 % nsims = 50;
-% rebalancing_periods = 5:5:50;
+% rebalancing_periods = 25:5:50;
 % 
 % tic;
 % for i = 1:size(rebalancing_periods,2)
@@ -151,8 +152,10 @@ title('Portfolio Total Return')
 % plot(rebalancing_periods, stds)
 % xlabel('Rebalancing Frequency')
 % ylabel('Stds')
+% title('Stds vs Rebalancing Frequency')
 % 
 % figure('Name', 'Mean Return vs Rebalancing Frequency')
 % plot(rebalancing_periods, mean_strat)
 % xlabel('Rebalancing Frequency')
 % ylabel('Mean Return')
+% title('Mean Return vs Rebalancing Frequency')
