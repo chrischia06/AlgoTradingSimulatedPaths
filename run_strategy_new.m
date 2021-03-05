@@ -23,7 +23,7 @@ sim_obj = MarketSimulator(T,s0,model_params);
 %% Visualization of a Single Simulation for a Strategy
 
 % Run strategy on environment
-sim_obj = spca_optimisation(sim_obj);
+sim_obj = cvar_optimisation(sim_obj);
 
 % Plot simulated price history
 figure('Name','Portfolio Weight Evolution');
@@ -59,21 +59,21 @@ title('Portfolio Total Return')
 
 %% Computing the Target Objective for a Strategy
 
-nsims = 3;
+nsims = 30;
 lambda = 0.5:0.5:5;
 
-loss_value = zeros(1, size(lambda,2))
+loss_value = zeros(1, size(lambda,2));
 
 tic;
 
-stds = zeros(1, size(lambda,2))
-mean_strat = zeros(1, size(lambda,2))
+stds = zeros(1, size(lambda,2));
+mean_strat = zeros(1, size(lambda,2));
 
 for i = 1:size(lambda,2)
     cumret_array = zeros(nsims,1);
     for k=1:nsims
         % Store each simulation's result in array
-        sim_obj = spca_optimisation(sim_obj,lambda(i));
+        sim_obj = cvar_optimisation(sim_obj,lambda(i));
         cumret_array(k) = sim_obj.R_hist(end);
     end
     stds(i) = std(cumret_array);
@@ -86,11 +86,17 @@ scatter(stds, mean_strat);
 grid on;
 xlabel("Std Deviation");
 ylabel("Mean Return");
+ylim([1, 1.004])
 
 
 running_time = toc;
 
-loss_values = array2table(loss_value, 'VariableNames', string(lambda))
+loss_values = array2table(loss_value, 'VariableNames', string(lambda));
+latex(vpa(loss_value, 5))
 
-
+figure('Name', 'Utility against lambda')
+plot(lambda, loss_value)
+xlabel('Lambda')
+ylabel('Utility function')
+ylim([1, 1.003])
 
