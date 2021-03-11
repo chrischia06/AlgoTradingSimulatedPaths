@@ -1,4 +1,7 @@
-function simObj = pca_optimisation(simObj)
+function simObj = pca_optimisation(simObj, lambda)
+    if nargin < 2
+        lambda = 0.5;
+    end
     % Use PCA as a factor model to construct a covariance matrix
     % then use mean-variance (Quadratic) optimisation
     simObj.reset(); % reset simulation environment
@@ -21,7 +24,7 @@ function simObj = pca_optimisation(simObj)
                 % max E[R] - lambda Var[R_t] = max 1/ 2lambda [] - 1/2
                 % Var[R_t];min 1/2 Var[R_t] - 1/2lambda mean_rets
                 mean_rets = mean(rets, 2);
-                w_const = quadprog(estim_cov, [], [], [],...
+                w_const = quadprog(estim_cov, -1/(2 * lambda) * mean_rets, [], [],...
                                ones(1, simObj.d), 1,...
                                zeros(1, simObj.d),...
                                ones(1, simObj.d),w_const, options);

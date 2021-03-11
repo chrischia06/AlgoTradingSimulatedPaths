@@ -1,7 +1,14 @@
+%%
 clear;
 close all hidden;
 
-description = "one_over_n, 1000 runs test";
+%%% Set Strategy Here
+% description = "";
+description = "Lasso Regression, warmup = 50, rebalancing_freq = 50, T = 500 runs, lambda=3.5";
+chosen_strategy = @reg;
+lambda = 3.5;
+%%%
+%%
 
 % seed
 rng(2021);
@@ -26,6 +33,7 @@ cs = zeros(N, d);
 strategy_returns  = zeros(N, T);
 max_drawdowns  = zeros(N, 1);
 max_drawdown_duration = zeros(N, 1);
+terminal_rets = zeros(N, 1);
 
 tic;
 % backtest on simulated data
@@ -43,10 +51,11 @@ for i = 1:N
     sim_obj = MarketSimulator(T,s0,model_params);
 
     % Run strategy on environment
-    sim_obj = one_over_n(sim_obj);
+    sim_obj = chosen_strategy(sim_obj, lambda);
         
     % cache returns, maximum drawdown, and max drawdown duration
     strategy_returns(i,:) = sim_obj.r_hist;
+    terminal_rets(i) = sim_obj.R_hist(T);
     
     % max drawdown, duration for 1 path
     [max_drawdowns(i), idx] = maxdrawdown(sim_obj.R_hist);
@@ -70,7 +79,7 @@ title('Maximum Drawdown Duration Distribution')
 % . Efficient Frontier - Return v Std Deviation
 figure('Name','Efficient Frontier')
 mean_strat = mean(strategy_returns, 2);
-stds = std(strategy_returns, 0, 2);
+stds	 = std(strategy_returns, 0, 2);
 
 % plot(cumsum(mus) ./ (1:(size(mus,1)))')
 [vals, idx] = sortrows([mean_strat stds], 2);
@@ -103,19 +112,26 @@ histogram(mean_strat ./ stds,100);
 grid on;
 title('Sharpe Ratio Distribution')
 
+figure('Name', 'R_{T} Distribution')
+histogram(terminal_rets - 1, 100)
+grid on;
+xline(mean(terminal_rets - 1), "r--", mean(terminal_rets - 1))
+title('R_{T} Distribution')
+
 mean_sharpe = mean(mean_strat ./ stds);
 skew_sharpe = skewness(mean_strat ./ stds);
 std_sharpe = std(mean_strat ./ stds);
 kurtosis_sharpe = kurtosis(mean_strat ./ stds);
 % calmar_ratio = mean_strat ./ max_drawdowns
 
+cumul_rets = sim_obj.R_hist - 1;
 
 % sample moments of Sharpe Distribution
 
 filename = 'logs/' + description + ' ' + string(datetime(now,'ConvertFrom','datenum')) + '.txt';
 stats = [mean_sharpe std_sharpe skew_sharpe kurtosis_sharpe ...
  median(max_drawdowns) median(max_drawdown_duration) running_time,...
- mean(strategy_returns(:,T)), var(strategy_returns(:,T))];
+ mean(terminal_rets - 1), var(terminal_rets)];
 % write output results
 stats_table = array2table(stats,'VariableNames',{'Mean','Std','Skew', 'Skurtosis',...
                   'Median Max Drawdown','Median Max Drawdown Duration', 'Time',...
@@ -126,7 +142,7 @@ writetable(stats_table, filename);
 
 %% diagnosis for a single run of the strat
 
-% Plot simulated price history
+% Plot simulate d price history
 figure('Name','Stock Price Evolution');
 plot(1:(T+1),sim_obj.s_hist);
 grid on;
@@ -153,7 +169,14 @@ plot(1:T,sim_obj.R_hist-1);
 grid on;
 title('Portfolio Total Return')
 
+
+
 % frequently-used : log returns
 log_returns = diff(log(sim_obj.s_hist),1,2); %N x T
 % running mean - cumsum(log_returns,2) ./ (1:T)
 % plot((cumsum(log_returns,2) ./  (1:T))')
+% testing convergence of estimates
+% convergence of E[R_T]
+% plot(cumsum(mean_strat ./ stds)' ./ (1:N))
+% convergence of variance Var[R_T]
+% plot((cumsum((mean_strat ./ stds) .^ 2)' - (cumsum((mean_strat ./ stds))' / (1:N)) .^2) ./ (1:N))

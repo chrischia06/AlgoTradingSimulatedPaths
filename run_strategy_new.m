@@ -99,4 +99,3 @@ plot(lambda, loss_value)
 xlabel('Lambda')
 ylabel('Utility function')
 ylim([1, 1.003])
-

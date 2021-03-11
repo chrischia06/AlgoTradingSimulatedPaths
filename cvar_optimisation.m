@@ -10,7 +10,7 @@ function simObj = cvar_optimisation(simObj,lambda)
     min_weight_per_asset    = 0.00; % default
     max_weight_per_asset    = 1.00; % default
     beta = 0.99; % 1 - CVaR level
-    rebalancing_periods = floor(0.2 * simObj.T - (lambda-0.5)*0.15*simObj.T/4.5);
+    rebalancing_periods = max(simObj.T / 5, 10);
     for i=1:simObj.T
         if i < warmup
             w_const = ones(simObj.d,1)/simObj.d;
