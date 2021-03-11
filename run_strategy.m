@@ -1,8 +1,14 @@
+%%
 clear;
 close all hidden;
 
-description = "Current Price Weighted, 500 runs test";
+%%% Set Strategy Here
+% description = "";
+description = "Lasso Regression, warmup = 50, rebalancing_freq = 50, T = 500 runs, lambda=3.5";
+chosen_strategy = @reg;
 lambda = 3.5;
+%%%
+%%
 
 % seed
 rng(2021);
@@ -45,7 +51,7 @@ for i = 1:N
     sim_obj = MarketSimulator(T,s0,model_params);
 
     % Run strategy on environment
-    sim_obj = mean_variance(sim_obj, lambda);
+    sim_obj = chosen_strategy(sim_obj, lambda);
         
     % cache returns, maximum drawdown, and max drawdown duration
     strategy_returns(i,:) = sim_obj.r_hist;
@@ -106,6 +112,12 @@ histogram(mean_strat ./ stds,100);
 grid on;
 title('Sharpe Ratio Distribution')
 
+figure('Name', 'R_{T} Distribution')
+histogram(terminal_rets - 1, 100)
+grid on;
+xline(mean(terminal_rets - 1), "r--", mean(terminal_rets - 1))
+title('R_{T} Distribution')
+
 mean_sharpe = mean(mean_strat ./ stds);
 skew_sharpe = skewness(mean_strat ./ stds);
 std_sharpe = std(mean_strat ./ stds);
@@ -156,6 +168,8 @@ figure('Name','Portfolio Total Return');
 plot(1:T,sim_obj.R_hist-1);
 grid on;
 title('Portfolio Total Return')
+
+
 
 % frequently-used : log returns
 log_returns = diff(log(sim_obj.s_hist),1,2); %N x T

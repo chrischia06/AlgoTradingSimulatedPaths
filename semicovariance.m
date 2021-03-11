@@ -1,5 +1,8 @@
-function simObj = semicovariance(simObj)
+function simObj = semicovariance(simObj, lambda)
     simObj.reset(); % reset simulation environment
+    if nargin < 2
+        lambda = 0.5
+    end
     %% general
     % mean variance / minimum variance portfolio
     % rebalanced every t periods
@@ -22,7 +25,7 @@ function simObj = semicovariance(simObj)
     %%
     rebalancing_periods = max(simObj.T / 5, 10);
     options = optimset('Display', 'off');
-    warmup = 100;
+    warmup = 100;   
     for i=1:simObj.T
         if i < warmup
             w_const = ones(simObj.d,1)/simObj.d;

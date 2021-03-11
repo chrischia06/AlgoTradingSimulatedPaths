@@ -1,4 +1,4 @@
-function simObj = mean_correlation(simObj)
+function simObj = mean_correlation(simObj, lambda)
     simObj.reset(); % reset simulation environment
     %% general
     % mean variance / minimum variance portfolio
@@ -22,6 +22,9 @@ function simObj = mean_correlation(simObj)
     % ccc_mvgarch, dcc, rarch, gogarch, PCA/Factor
     % Don't really seem to work
     %%
+    if nargin < 2
+        lambda = 0.5;
+    end
     rebalancing_periods = max(simObj.T / 5, 10);
     options = optimset('Display', 'off',...
                        'Algorithm','interior-point-convex');
@@ -41,7 +44,7 @@ function simObj = mean_correlation(simObj)
                 rets = rets - mean(rets,2);
                 mean_rets = mean(rets,2);
                 % H, f, A, b, Aeq, beq, lb, ub
-                w_const = quadprog(corr(rets' * 100), -2 * mean_rets, [], [],...
+                w_const = quadprog(corr(rets'), -1/ (2 * lambda) * mean_rets, [], [],...
                                ones(1, simObj.d), 1,...
                                min_weight * ones(1,simObj.d),...
                                max_weight * ones(1,simObj.d),w_const, options);

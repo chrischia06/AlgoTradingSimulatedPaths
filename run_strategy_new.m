@@ -96,7 +96,7 @@ plot(lambda, loss_value)
 grid on;
 xlabel('Lambda');
 ylabel('Quadratic Utility');
-title('Loss against Lambda');
+title('Quadratic Utility against Lambda');
 
 
 figure('Name', 'Mean[R], Std[R] against Lambda')

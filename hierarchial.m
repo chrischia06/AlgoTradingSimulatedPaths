@@ -1,4 +1,7 @@
-function simObj = hierarchial(simObj)
+function simObj = hierarchial(simObj, lambda)
+    if nargin < 2
+        lambda = 0.5;
+    end
     % Cluster stocks together by return?
     % assign weight to each cluster
     % assign weight to each asset in cluster

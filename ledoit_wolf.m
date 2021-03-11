@@ -1,4 +1,4 @@
-function simObj = ridge_shrinkage(simObj, lambda)
+function simObj = ledoit_wolf(simObj, lambda)
     simObj.reset(); % reset simulation environment
     if nargin < 2
         lambda = 0.5;
@@ -40,7 +40,7 @@ function simObj = ridge_shrinkage(simObj, lambda)
                 shrinked_cov = QIS(rets');
                 % H, f, A, b, Aeq, beq, lb, ub
                 mean_rets = mean(rets, 2);
-                w_const = quadprog(shrinked_cov, [], [], [],...
+                w_const = quadprog(shrinked_cov, - 1/ (2 * lambda) * mean_rets, [], [],...
                                ones(1, simObj.d), 1,...
                                min_weight * ones(1,simObj.d),...
                                max_weight * ones(1,simObj.d),w_const, options);

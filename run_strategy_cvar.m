@@ -3,7 +3,7 @@ close all hidden;
 %% Model and Simulator Initialization 
 
 % Initialize Model Parameters
-T = 250;
+T = 500;
 d = 50;
 eta = 0.0002;
 

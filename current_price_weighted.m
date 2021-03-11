@@ -11,7 +11,7 @@ function simObj = current_price_weighted(simObj, lambda)
     p = lambda;
     for i=1:simObj.T
        cap = simObj.s_cur ./ sum(simObj.s_cur); % price weighted portfolio vector
-       w_const = cap .^ lambda;
+       w_const = cap .^ (1 / lambda);
        w_const = w_const ./ sum(w_const);
        simObj.step(w_const);
     end
