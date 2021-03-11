@@ -4,9 +4,11 @@ Contributors: [Sandra Ng](https://github.com/sandrangying), [Chris Chia](https:/
 
 <!-- Cloned from : https://github.com/SIAM-FM21-PC/MathWorks -->
 
-[Timeline of Development](#DEVELOPMENT.md)
+[![.github/workflows/main.yml](https://github.com/chrischia06/AlgoTradingSimulatedPaths/actions/workflows/main.yml/badge.svg)](https://github.com/chrischia06/AlgoTradingSimulatedPaths/actions/workflows/main.yml)
 
-[Complete List of Literature References](#REFERENCES.md)
+[Timeline of Development](DEVELOPMENT.md)
+
+[Complete List of Literature References](REFERENCES.md)
 
 ### Currently Implemented / Work in Progress
 

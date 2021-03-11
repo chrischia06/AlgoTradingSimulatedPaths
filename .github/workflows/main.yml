@@ -34,9 +34,10 @@ jobs:
             result.to_csv("logs/results.csv", index=False)
             result2 = result.apply(lambda x: round(x, 4) if x.dtype != "object" else x)
             result2["Median Max Drawdown Duration"] = result2["Median Max Drawdown Duration"].apply(lambda x: round(x, 1))
-            result2.drop(['Time', 'description'], axis = 1).to_latex("logs/results/result_latex.txt",index=False)
+            result2.drop(['Time', 'description'], axis = 1).to_latex("logs/result_latex.txt",index=False)
       - name: Commit rendered files
         run: |
           git add logs/results.csv
+          git add logs/result_latex.txt
           git commit -m "Update backtest log" || echo "No changes to commit"
           git push origin main || echo "No changes to commit"
