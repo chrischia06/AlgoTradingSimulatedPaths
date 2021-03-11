@@ -4,9 +4,9 @@ close all hidden;
 
 %%% Set Strategy Here
 % description = "";
-description = "Lasso Regression, warmup = 50, rebalancing_freq = 50, T = 500 runs, lambda=3.5";
-chosen_strategy = @reg;
-lambda = 3.5;
+description = "PCA optimisation, warmup = 100, rebalancing_freq = 100, k = 5, T = 500 runs, lambda=0.1";
+chosen_strategy = @pca_optimisation;
+lambda = 0.1;
 %%%
 %%
 

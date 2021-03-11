@@ -26,13 +26,15 @@ jobs:
             import os
             import pandas
             result = pandas.DataFrame()
-            print("Directory contents:")
             for f in os.listdir("logs"):
               if f[-3:] == 'txt':
                 temp = pandas.read_csv(f"logs/{f}")
                 temp["description"] = f
                 result = pandas.concat([result, temp])
             result.to_csv("logs/results.csv", index=False)
+            result2 = result.apply(lambda x: round(x, 4) if x.dtype != "object" else x)
+            result2["Median Max Drawdown Duration"] = result2["Median Max Drawdown Duration"].apply(lambda x: round(x, 1))
+            result2.drop(['Time', 'description'], axis = 1).to_latex("logs/results/result_latex.txt",index=False)
       - name: Commit rendered files
         run: |
           git add logs/results.csv
