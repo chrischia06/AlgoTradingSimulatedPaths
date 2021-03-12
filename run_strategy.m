@@ -2,13 +2,12 @@
 clear;
 close all hidden;
 
-%%% Set Strategy Here
+%% Set Strategy Here
 % description = "";
-description = "PCA optimisation, warmup = 100, rebalancing_freq = 100, k = 5, T = 500 runs, lambda=0.1";
+description = "PCA optimisation, warmup = 100, rebalancing_freq = 100, k = 5, T = 500 runs, lambda=100";
 chosen_strategy = @pca_optimisation;
-lambda = 0.1;
-%%%
-%%
+lambda = 5;
+%% Set Parameters
 
 % seed
 rng(2021);
@@ -25,9 +24,17 @@ eta = 0.0002; % market impact
 Mrank = floor(0.25*d); % rank   of cov
 s0 = 100*ones(d,1); % intial asset prices
     
-% cache mus (drift), cs (transaction proportion)
-mus = zeros(N, d);
-cs = zeros(N, d);
+% pre-generate mus (drift), cs (transaction proportion), Ms (diffusion)
+mus = 2e-5 * normrnd(0, 1, N, d).^2; % drift
+cs = 1e-8 * normrnd(0, 1, N, d).^2; % market impact; non-negative
+Ms = zeros(N, d, d); % diffusion
+
+for i = 1:N
+    % provided code to generate low rank matrix
+    [U,S,V] = svd( randn(d,d) );
+    diagM = diag( [ normrnd(0,1,Mrank,1) ; zeros(d-Mrank,1) ] );
+    Ms(i,:,:) = 5e-3 * U * diagM * V'; % Randomly generated matrix of rank Mrank
+end
 
 % cache backtest results
 strategy_returns  = zeros(N, T);
@@ -35,20 +42,14 @@ max_drawdowns  = zeros(N, 1);
 max_drawdown_duration = zeros(N, 1);
 terminal_rets = zeros(N, 1);
 
+%% backtest on simulated data
 tic;
-% backtest on simulated data
 
 for i = 1:N
-    % provided code to generate low rank matrix
-    [U,S,V] = svd( randn(d,d) );
-    diagM = diag( [ normrnd(0,1,Mrank,1) ; zeros(d-Mrank,1) ] );
-    M = 5e-3 * U * diagM * V'; % Randomly generated matrix of rank Mrank
-    mus(i, :) = 2e-5 * normrnd(0,1,d,1).^2; % drift
-    cs(i, :) = 1e-8 * normrnd(0,1,d,1).^2; % market impact; non-negative
 
     % Initialize Simulation Environment
-    model_params = struct('mu', mus(i,:), 'M', M,'c',cs(i, :),'eta',eta);
-    sim_obj = MarketSimulator(T,s0,model_params);
+    model_params = struct('mu', mus(i,:), 'M', reshape(Ms(i,:,:), d, d), 'c',cs(i, :),'eta',eta);
+    sim_obj = MarketSimulator(T, s0, model_params);
 
     % Run strategy on environment
     sim_obj = chosen_strategy(sim_obj, lambda);
@@ -98,7 +99,7 @@ grid on;
 xlabel("Std Deviation");
 ylabel("Mean Return");
 yline(0, 'r--')
-title('Monte Carlo Efficient Frontier')
+title('Monte Carlo Efficient Frontier (1-period returns)')
 
 % Strategy Returns
 figure('Name', 'Cumulative Strategy Returns')

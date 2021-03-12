@@ -56,6 +56,18 @@
 
 + [Generalised Sharpe Ratios and Asset Pricing in Incomplete Markets (2002)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=244731)
 
++ [Stochastic Dynamic Programming Methods for thePortfolio Selection Problem, PHD Thesis](http://etheses.lse.ac.uk/724/1/Karamanis_Stochastic_dynamic_programming_2013.pdf)
+
++ [Numerical Solution of Dynamic Portfolio Optimizationwith Transaction Costs (2020)](https://arxiv.org/pdf/2003.01809.pdf)
+
++ [Portfolio Optimization with PositionConstraints: an Approximate DynamicProgramming Approach](http://www.columbia.edu/~mh2078/ADP_Dual_Oct06.pdf)
+
++ [Multiperiod Portfolio Selection and Bayesian Dynamic Models (2014)](https://www.researchgate.net/publication/266004623_Multiperiod_Portfolio_Selection_and_Bayesian_Dynamic_Models)
+
++ [Cover's universal portfolio, stochastic portfolio theory, and the numéraire portfolio](https://onlinelibrary.wiley.com/doi/abs/10.1111/mafi.12201)
+
++ [DRAWDOWN MEASURE IN PORTFOLIO OPTIMIZATION (2005)](https://econpapers.repec.org/article/wsiijtafx/v_3a08_3ay_3a2005_3ai_3a01_3an_3as0219024905002767.htm)
+
 #### Using Machine Learning
 + https://discovery.ucl.ac.uk/id/eprint/1474136/1/PhDThesis_ToyinAwoye.pdf
 
@@ -88,6 +100,8 @@
 + Deep Learning, Predictability, and OptimalPortfolio Returns https://arxiv.org/pdf/2009.03394.pdf
 
 + Optimal Versus Naive Diversification: How Inefficient is the 1/N Portfolio Strategy http://faculty.london.edu/avmiguel/DeMiguel-Garlappi-Uppal-RFS.pdf
+
++ Derek Snow, Machine Learning in Asset Management (2019)
 
 #### Stochastic Portfolio Theory
 + Stochastic Portfolio Theory:A Machine Learning Perspective: https://arxiv.org/pdf/1605.02654.pdf
