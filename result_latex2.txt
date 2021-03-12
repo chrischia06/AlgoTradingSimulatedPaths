@@ -1,0 +1,18 @@
+\begin{tabular}{lllrrrrr}
+\toprule
+{} &                                        description &                    hyperparams &  Mean RT &   SD RT &  Skew RT &  Kurt RT &  Lambda \\
+\midrule
+0 &  Inverse volatility weighted-12-Mar-2021 20:31:... &     warmup = 30, frequency = 1 &   0.0105 &  0.0000 &   0.0374 &   3.4990 &     5.0 \\
+0 &  Inverse volatility weighted-12-Mar-2021 20:34:... &     warmup = 50, frequency = 1 &   0.0106 &  0.0000 &   0.0166 &   3.5646 &     5.0 \\
+0 &  Inverse volatility weighted-12-Mar-2021 20:38:... &     warmup = 75, frequency = 1 &   0.0107 &  0.0100 &   0.0382 &   3.5744 &     5.0 \\
+0 &    current\_price\_weighted-12-Mar-2021 20:47:39.txt &                  frequency = 1 &   0.0114 &  0.0100 &   0.3760 &   4.4405 &     1.0 \\
+0 &    current\_price\_weighted-12-Mar-2021 20:49:29.txt &                  frequency = 1 &   0.0115 &  0.0100 &   0.1742 &   4.3100 &    10.0 \\
+0 &    current\_price\_weighted-12-Mar-2021 20:51:44.txt &                  frequency = 1 &   0.0106 &  0.0141 &   1.6290 &   7.9920 &     0.1 \\
+0 &               ledoit-wolf-12-Mar-2021 21:18:47.txt &      warmup = 100, frequency=1 &   0.0200 &  0.0640 &   0.4435 &   4.3856 &     1.0 \\
+0 &               ledoit-wolf-12-Mar-2021 21:26:50.txt &      warmup = 100, frequency=1 &   0.0127 &  0.0000 &   0.7258 &   5.9935 &   999.0 \\
+0 &               ledoit-wolf-12-Mar-2021 21:32:52.txt &  warmup = 100, frequency = 100 &   0.0213 &  0.0566 &   0.5858 &   4.9022 &     5.0 \\
+0 &               ledoit-wolf-12-Mar-2021 21:40:31.txt &  warmup = 100, frequency = 100 &   0.0195 &  0.0656 &   0.3959 &   4.1841 &     0.1 \\
+0 &                one-over-n-12-Mar-2021 21:01:22.txt &                  frequency = 1 &   0.0115 &  0.0100 &   0.1520 &   4.3066 &     1.0 \\
+0 &              proportional-12-Mar-2021 20:54:00.txt &                  frequency = 1 &   0.0113 &  0.0100 &  -0.0744 &   4.3892 &     1.0 \\
+\bottomrule
+\end{tabular}
