@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
       - uses: actions/setup-python@v2
         with:
           python-version: 3.7
@@ -37,7 +35,7 @@ jobs:
             result2.drop(['Time', 'description'], axis = 1).to_latex("logs/result_latex.txt",index=False)
       - name: Commit rendered files
         run: |
-          git add logs/results.csv
-          git add logs/result_latex.txt
+          git config --global user.name "bot"
+          git add logs/*
           git commit -m "Update backtest log" || echo "No changes to commit"
           git push origin main || echo "No changes to commit"
