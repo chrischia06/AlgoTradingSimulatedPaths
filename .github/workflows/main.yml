@@ -30,12 +30,12 @@ jobs:
                 temp["description"] = f
                 result = pandas.concat([result, temp])
             result.to_csv("logs/results.csv", index=False)
+            result["Median Max Drawdown Duration"] = result["Median Max Drawdown Duration"].apply(lambda x: round(x, 1))
+            result['SD RT'] = result['Var RT'].apply(lambda x: x ** 0.5)
             result2 = result.apply(lambda x: round(x, 4) if x.dtype != "object" else x)
-            result2["Median Max Drawdown Duration"] = result2["Median Max Drawdown Duration"].apply(lambda x: round(x, 1))
-            result2['SD RT'] = result2['Var RT'].apply(lambda x: round(x ** 0.5, 4))
             columns = ['description','hyperparams', 'Mean RT', 'SD RT', 'Skew RT','Kurt RT', 'Lambda']
             result2['description'] = result2['description'].apply(lambda x: x[:-25])
-            result2 = result2.sort_values(by='description')
+            result2 = result2.sort_values(by=['description','Lambda'])
             result2[columns].to_latex('result_latex2.txt', index=False)
       - name: Commit rendered files
         run: |
