@@ -32,8 +32,10 @@ jobs:
             result.to_csv("logs/results.csv", index=False)
             result2 = result.apply(lambda x: round(x, 4) if x.dtype != "object" else x)
             result2["Median Max Drawdown Duration"] = result2["Median Max Drawdown Duration"].apply(lambda x: round(x, 1))
-            columns = ['hyperparams', 'Mean RT', 'Var RT', 'Skew RT','Kurt RT', 'Lambda']
-            result3 = result2.set_index('description')
+            columns = ['description','hyperparams', 'Mean RT', 'Var RT', 'Skew RT','Kurt RT', 'Lambda']
+            result3 = result2[columns]
+            result3['SD RT'] = result3['Var RT'].apply(lambda x: round(x ** 0.5, 4))
+            results3 = results3.sort_values(by='description')
             result3[columns].to_latex('result_latex2.txt')
       - name: Commit rendered files
         run: |
