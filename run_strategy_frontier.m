@@ -4,7 +4,7 @@ close all hidden;
 
 %%% Set Strategy Here
 % description = "";
-description = "PCA optimisation, warmup = 100, rebalancing_freq = 100, k = 5, T = 500 runs, lambda=100";
+description = "Proportionally weighted, warmup = 100, rebalancing_freq = 100, k = 5, T = 500 runs, lambda=100";
 
 filename = ('logs/frontier/' + description + ' ' +...
             string(datetime(now,'ConvertFrom','datenum')));

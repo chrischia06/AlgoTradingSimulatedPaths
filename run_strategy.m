@@ -3,10 +3,26 @@ clear;
 close all hidden;
 
 %% Set Strategy Here
-% description = "";
-description = "PCA optimisation, warmup = 100, rebalancing_freq = 100, k = 5, T = 500 runs, lambda=100";
-chosen_strategy = @pca_optimisation;
-lambda = 5;
+% 1. Change Description
+% 2. Set hyperparameter variables: warmup, frequency
+% 3. Change chosen_strategy
+% 4. Set hyperparameter string
+
+% description = "PCA optimisation, warmup = 100, rebalancing_freq = 100, k = 5, T = 500 runs, lambda=100";
+description = "ledoit-wolf";
+filename = 'logs/' + description + '-' +...
+           string(datetime(now,'ConvertFrom','datenum'));
+
+%hyperparams
+lambda = 0.1;
+
+warmup = 100;
+frequency = 100;
+chosen_strategy = @(x)ledoit_wolf(x, lambda, warmup);
+hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
+
+% chosen_strategy = @(x)one_over_n(x, lambda);
+% hyperparams = "frequency = 1";
 %% Set Parameters
 
 % seed
@@ -20,12 +36,12 @@ N = 500;
 % **Clarifications to T, d from Slack Channel
 T = 500; % time horizon
 d = 50; % assets
-eta = 0.0002; % market impact
-Mrank = floor(0.25*d); % rank   of cov
+eta = 0.0002; % market impact, 0.2%
+Mrank = floor(0.25*d); % rank of cov
 s0 = 100*ones(d,1); % intial asset prices
     
 % pre-generate mus (drift), cs (transaction proportion), Ms (diffusion)
-mus = 2e-5 * normrnd(0, 1, N, d).^2; % drift
+mus = 2e-5 * normrnd(0, 1, N, d).^2; % drift 0.002%
 cs = 1e-8 * normrnd(0, 1, N, d).^2; % market impact; non-negative
 Ms = zeros(N, d, d); % diffusion
 
@@ -48,11 +64,12 @@ tic;
 for i = 1:N
 
     % Initialize Simulation Environment
-    model_params = struct('mu', mus(i,:), 'M', reshape(Ms(i,:,:), d, d), 'c',cs(i, :),'eta',eta);
+    model_params = struct('mu', mus(i,:), 'M', reshape(Ms(i,:,:), d, d),...
+                          'c',cs(i, :),'eta',eta);
     sim_obj = MarketSimulator(T, s0, model_params);
 
     % Run strategy on environment
-    sim_obj = chosen_strategy(sim_obj, lambda);
+    sim_obj = chosen_strategy(sim_obj);
         
     % cache returns, maximum drawdown, and max drawdown duration
     strategy_returns(i,:) = sim_obj.r_hist;
@@ -66,6 +83,28 @@ running_time = toc;
 
 %% Metrics
 
+% sample moments of Sharpe Distribution
+mean_strat = mean(strategy_returns, 2);
+std_strat  = std(strategy_returns, 0, 2);
+
+mean_sharpe = mean(mean_strat ./ std_strat);
+skew_sharpe = skewness(mean_strat ./ std_strat);
+std_sharpe = std(mean_strat ./ std_strat);
+kurtosis_sharpe = kurtosis(mean_strat ./ std_strat);
+% calmar_ratio = mean_strat ./ max_drawdowns
+
+stats = {mean_sharpe std_sharpe skew_sharpe kurtosis_sharpe ...
+ median(max_drawdowns) median(max_drawdown_duration) running_time,...
+ mean(terminal_rets - 1), var(terminal_rets) skewness(terminal_rets)...
+      kurtosis(terminal_rets) string(datetime(now,'ConvertFrom','datenum')) lambda hyperparams};
+
+  % write output results
+stats_table = cell2table(stats,'VariableNames',{'Mean','Std','Skew', 'Kurtosis',...
+                  'Median Max Drawdown','Median Max Drawdown Duration', 'Time',...
+                  'Mean RT', 'Var RT', 'Skew RT', 'Kurt RT', 'Date', 'Lambda', 'hyperparams'})
+writetable(stats_table, filename + '.txt');
+
+%% Plot Monte Carlo Metrics - One period
 % Max Drawdowns
 figure('Name',"Distribution of Maximum Drawdowns")
 histogram(max_drawdowns,100)
@@ -78,12 +117,8 @@ grid on;
 title('Maximum Drawdown Duration Distribution')
 
 % . Efficient Frontier - Return v Std Deviation
-figure('Name','Efficient Frontier')
-mean_strat = mean(strategy_returns, 2);
-stds	 = std(strategy_returns, 0, 2);
-
 % plot(cumsum(mus) ./ (1:(size(mus,1)))')
-[vals, idx] = sortrows([mean_strat stds], 2);
+[vals, idx] = sortrows([mean_strat std_strat], 2);
 best = [];
 temp = 0;
 for j = 1:length(vals)
@@ -92,7 +127,10 @@ for j = 1:length(vals)
         best = [best j];
     end
 end
-scatter(stds, mean_strat);
+
+% efficient frontier of mean 1 period returns
+figure('Name', 'Efficient Frontier')
+scatter(std_strat, mean_strat);
 hold on;
 plot([0 ; vals(best,2)], [0 ; vals(best,1)])
 grid on;
@@ -109,37 +147,19 @@ title('Cumulative Strategy Returns')
 
 % Distribution of Sharpe Ratio
 figure('Name', 'Sharpe Ratio')
-histogram(mean_strat ./ stds,100);
+histogram(mean_strat ./ std_strat,100);
 grid on;
 title('Sharpe Ratio Distribution')
 
+%% Plot Monte Carlo Metrics - Terminal
+
+% gives shape of R_{T}
 figure('Name', 'R_{T} Distribution')
 histogram(terminal_rets - 1, 100)
 grid on;
 xline(mean(terminal_rets - 1), "r--", mean(terminal_rets - 1))
 title('R_{T} Distribution')
-
-mean_sharpe = mean(mean_strat ./ stds);
-skew_sharpe = skewness(mean_strat ./ stds);
-std_sharpe = std(mean_strat ./ stds);
-kurtosis_sharpe = kurtosis(mean_strat ./ stds);
-% calmar_ratio = mean_strat ./ max_drawdowns
-
-cumul_rets = sim_obj.R_hist - 1;
-
-% sample moments of Sharpe Distribution
-
-filename = 'logs/' + description + ' ' + string(datetime(now,'ConvertFrom','datenum')) + '.txt';
-stats = [mean_sharpe std_sharpe skew_sharpe kurtosis_sharpe ...
- median(max_drawdowns) median(max_drawdown_duration) running_time,...
- mean(terminal_rets - 1), var(terminal_rets)];
-% write output results
-stats_table = array2table(stats,'VariableNames',{'Mean','Std','Skew', 'Skurtosis',...
-                  'Median Max Drawdown','Median Max Drawdown Duration', 'Time',...
-                  'Mean RT', 'Var RT'})
-writetable(stats_table, filename);
-% could add CVaR, VaR
-
+saveas(gcf, filename + "-Terminal-Return-Distribution.png")
 
 %% diagnosis for a single run of the strat
 
@@ -154,6 +174,12 @@ figure('Name','Portfolio Weight Evolution');
 plot(1:T,sim_obj.w_hist);
 grid on;
 title('Portfolio Weight Evolution')
+
+% % Plot portfolio proportion
+figure('Name','Proportion in each asset');
+plot([sim_obj.s_hist(:,1:T) .* sim_obj.w_hist(:,1:T) sim_obj.w_hist(:,T) .* sim_obj.s_hist(:,T +1)]');
+grid on;
+title('Proportions in each stock')
 
 % Plot portfolio 1-period returns + mean
 figure('Name','Portfolio 1-Period-Return Evolution');
@@ -171,11 +197,12 @@ grid on;
 title('Portfolio Total Return')
 
 
-
+%% MISC
 % frequently-used : log returns
 log_returns = diff(log(sim_obj.s_hist),1,2); %N x T
 % running mean - cumsum(log_returns,2) ./ (1:T)
-% plot((cumsum(log_returns,2) ./  (1:T))')
+% takes > 100 observations to estimate mean
+% plot((cumsum(log_returns,2) ./  (1:T))') 
 % testing convergence of estimates
 % convergence of E[R_T]
 % plot(cumsum(mean_strat ./ stds)' ./ (1:N))

@@ -1,0 +1,2 @@
+Mean,Std,Skew,Kurtosis,Median Max Drawdown,Median Max Drawdown Duration,Time,Mean RT,Var RT,Skew RT,Kurt RT,Date,Lambda,hyperparams
+0.079455,0.056663,0.27067,3.2142,0.0046509,69,29.1996,0.011401,6.6576e-05,0.376,4.4405,12-Mar-2021 20:48:09,1,frequency = 1
