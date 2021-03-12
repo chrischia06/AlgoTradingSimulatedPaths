@@ -108,6 +108,8 @@
 + https://quantdare.com/stochastic-portfolio-theory-revisited/
 + Fernholz, R., Karatzas, I. https://www.math.columbia.edu/~ik/FernKarSPT.pdf
 
++ Functionally Generated Portfolios inStochastic Portfolio Theory (2020), PHd Thesis, https://discovery.ucl.ac.uk/id/eprint/10091489/1/main.pdf
+
 #### Hierarchial Risk Parity related
 + The Hierarchical Equal Risk Contribution Portfolio https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3237540
 
