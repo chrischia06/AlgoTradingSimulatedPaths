@@ -15,7 +15,7 @@ filename = 'logs/' + description + '-' +...
 
 %hyperparams
 lambda = 0.1;
-
+    
 warmup = 100;
 frequency = 100;
 chosen_strategy = @(x)ledoit_wolf(x, lambda, warmup);
