@@ -1,20 +1,30 @@
-function simObj = mad_optimisation(simObj,lambda)
+function simObj = mad_optimisation(simObj,lambda, warmup,frequency)
     % Price-weighted porfolio strategy
     % https://github.com/FadyShoukry/MIE376-Robust-MAD/blob/master/originalMad.m
     if nargin<2
         lambda = 0.5;
+        warmup = 50;
+        frequency = max(simObj.T / 5, 10);
     end
-    warmup = 50;
+    if nargin < 3
+        warmup = 50;
+        frequency = max(simObj.T / 5, 10);
+    end
+    if nargin < 4
+        frequency = max(simObj.T / 5, 10);
+    end
+    
     simObj.reset(); % reset simulation environment
     options = optimset('Display','Off');
     warning('off');
+    
     min_weight_per_asset    = 0.00; % default
     max_weight_per_asset    = 1.00; % default
-    rebalancing_periods = max(simObj.T / 5, 10);
+    
     for i=1:simObj.T
         if i < warmup
             w_const = ones(simObj.d,1)/simObj.d;
-        elseif mod(i, rebalancing_periods) == 0
+        elseif mod(i, frequency) == 0
             rets = diff(log(simObj.s_hist(:,1:i)),1,2)';
             mu = geomean(1 + rets) - 1;
 %             mu = zeros(1, simObj.d);

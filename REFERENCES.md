@@ -31,18 +31,36 @@
 
 + Genetic Algorithms https://github.com/tradytics/eiten/blob/master/strategies/genetic_algo_strategy.py
 
-+ [Online Portfolio Selection: A Survey, Li, Hoi (2012)](https://arxiv.org/pdf/1212.2129.pdf)
-
-+ [Adaptive Bayesian Optimisation for Online Portfolio Selection (2015)](https://www.robots.ox.ac.uk/~sjrob/Pubs/NyikosaOsborneRobertsNipsBayesopt2015.pdf)
-
 + [Portfolio Allocation for Bayesian Optimization](https://www.cs.ubc.ca/~nando/papers/uaiBayesOpt.pdf)
 
 + [Portfolio AllocationFrom QP to ML Optimization Algorithms (2019)](http://www.thierry-roncalli.com/download/QP-ML-Portfolio-Optimization.pdf)
 
-+ [C. Yin , R. Perchet & F. Soupé (2021): A practical guide to robust portfolio optimization, Quantitative Finance (2021)](https://www.tandfonline.com/doi/pdf/10.1080/14697688.2020.1849780?needAccess=true)
-	+ Uncertainty in the estimates of mean returns.
++ [C. Yin , R. Perchet & F. Soupé (2021): A practical guide to robust portfolio optimization, Quantitative Finance (2021)](https://www.tandfonline.com/doi/pdf/10.1080/14697688.2020.1849780?needAccess=true) - Uncertainty in the estimates of mean returns.
+
+
+### Online Portfolio Selection
+
++ [Online Portfolio Selection: A Survey, Li, Hoi (2012)](https://arxiv.org/pdf/1212.2129.pdf)
+
++ [Online Convex Optimizationfor Portfolio Management](https://marinballu.github.io/papers/OCO_Ballu19.pdf)
+
++ [Adaptive Bayesian Optimisation for Online Portfolio Selection (2015)](https://www.robots.ox.ac.uk/~sjrob/Pubs/NyikosaOsborneRobertsNipsBayesopt2015.pdf)
+
++ https://hudson-and-thames-portfoliolab.readthedocs-hosted.com/en/latest/online_portfolio_selection/momentum.html
+
+
+
+
+### Conditional Value at Risk
 
 + [Performance-based regularizationinmean-CVaR portfolio optimization (2018)](https://arxiv.org/pdf/1111.2091.pdf)
+
++ [Optimization of conditional value-at-risk (2000)](https://www.ise.ufl.edu/uryasev/files/2011/11/CVaR1_JOR.pdf)
+
+### Conditional Drawdown at Risk
++ [PORTFOLIO OPTIMIZATION WITH DRAWDOWN CONSTRAINTS (2003)](https://www.ise.ufl.edu/uryasev/files/2011/11/drawdown.pdf) - introduces Conditional Drawdown at risk
+
++ [Drawdown measure in portfolio optimization (2005)](https://www.worldscientific.com/doi/abs/10.1142/S0219024905002767)
 
 + [Portfolio construction through handcrafting: motivating, article (2018)](https://qoppac.blogspot.com/2018/12/portfolio-construction-through.html)
 
@@ -110,10 +128,17 @@
 
 + Functionally Generated Portfolios inStochastic Portfolio Theory (2020), PHd Thesis, https://discovery.ucl.ac.uk/id/eprint/10091489/1/main.pdf
 
+
 #### Hierarchial Risk Parity related
 + The Hierarchical Equal Risk Contribution Portfolio https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3237540
 
 + Hierarchical Clustering Based Asset Allocation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2840729
+
+#### Graph Theoretical
+
++ Matrix Evolutions: Synthetic Correlations and Explainable Machine Learning for Constructing Robust Investment Portfolios https://www.researchgate.net/publication/346078378_Matrix_Evolutions_Synthetic_Correlations_and_Explainable_Machine_Learning_for_Constructing_Robust_Investment_Portfolios
+
++ Asset Clusters and Asset Networks in Financial Risk Management and Portfolio Optimization https://publikationen.bibliothek.kit.edu/1000025469
 
 #### Covariance Estimation
 + [MFE Toolbox Documentation](https://www.kevinsheppard.com/files/code/matlab/mfe-toolbox-documentation.pdf)
@@ -125,6 +150,10 @@
 + Estimation of Theory-Implied Correlation Matrices https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3484152
 
 + Random Matrix TheoryandCovariance Estimation http://faculty.baruch.cuny.edu/jgatheral/randommatrixcovariance2008.pdf
+
++ Honey I shrunk the covariance matrix http://www.ledoit.net/honey.pdf
+
++ Bouchaud-Potters-Bun random matrix theory, Cleaning large correlation matrices: tools from random matrix theory
 
 #### Rank Deficient Matrices
 

@@ -51,6 +51,10 @@ Quadratic shrinkage for lage covariance matrices.
 
 + https://uk.mathworks.com/matlabcentral/fileexchange/70186-asset-allocation-hierarchical-risk-parity
 
+Mean Absolute Deviation
++ https://github.com/FadyShoukry/MIE376-Robust-MAD
+
+
 ### Libraries
 + [Statistics and Machine Learning Toolbox](https://uk.mathworks.com/help/stats/index.html)
 + MFE-Toolbox
@@ -59,6 +63,8 @@ Quadratic shrinkage for lage covariance matrices.
 + https://github.com/microsoft/qlib
 + https://github.com/AI4Finance-LLC/FinRL-Library
 + https://uk.mathworks.com/matlabcentral/fileexchange/9061-risk-and-asset-allocation?s_tid=prof_contriblnk
-
++ https://hudson-and-thames-portfoliolab.readthedocs-hosted.com/en/latest/utils/risk_metrics.html
++ https://github.com/robertmartin8/PyPortfolioOpt
++ https://cran.r-project.org/web/packages/parma/vignettes/Portfolio_Optimization_in_parma.pdf
 
 
