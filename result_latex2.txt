@@ -18,6 +18,8 @@ Exponential Gradient Expectation Maximisation &                                 
                   Inverse volatility weighted &                         warmup = 50, frequency = 1 &   0.0106 & 0.0070 &   0.0166 &   3.5646 &     5.0 \\
                                          MACD & frequency = 1, warmup = 50, long=50, short = 10... &   0.0114 & 0.0081 &   0.1825 &   4.3154 &     1.0 \\
                                           MAD &                       warmup = 100, frequency = 50 &   0.0101 & 0.0053 &   0.4558 &   3.2911 &     1.0 \\
+                               Semicovariance &                       warmup = 100, frequency = 50 &   0.0256 & 0.0076 &   0.3657 &   2.7668 &     5.0 \\
+                               Semicovariance &                       warmup = 100, frequency = 50 &   0.0166 & 0.0000 &      inf &     -inf &     5.0 \\
                        current price weighted &                                      frequency = 1 &   0.0106 & 0.0134 &   1.6290 &   7.9920 &     0.1 \\
                        current price weighted &                                      frequency = 1 &   0.0114 & 0.0082 &   0.3760 &   4.4405 &     1.0 \\
                        current price weighted &                                      frequency = 1 &   0.0115 & 0.0080 &   0.1742 &   4.3100 &    10.0 \\
