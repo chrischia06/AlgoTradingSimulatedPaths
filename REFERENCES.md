@@ -37,6 +37,7 @@
 
 + [C. Yin , R. Perchet & F. Soupé (2021): A practical guide to robust portfolio optimization, Quantitative Finance (2021)](https://www.tandfonline.com/doi/pdf/10.1080/14697688.2020.1849780?needAccess=true) - Uncertainty in the estimates of mean returns.
 
++ [In Defense of Optimization: The Fallacy of 1/N](https://www.jstor.org/stable/27809177)
 
 ### Online Portfolio Selection
 
@@ -44,11 +45,18 @@
 
 + [Online Convex Optimizationfor Portfolio Management](https://marinballu.github.io/papers/OCO_Ballu19.pdf)
 
+
 + [Adaptive Bayesian Optimisation for Online Portfolio Selection (2015)](https://www.robots.ox.ac.uk/~sjrob/Pubs/NyikosaOsborneRobertsNipsBayesopt2015.pdf)
 
 + https://hudson-and-thames-portfoliolab.readthedocs-hosted.com/en/latest/online_portfolio_selection/momentum.html
 
+### Semivariance
 
+Aims at minimising the downside variation
+
++ [Mean-Semivariance Optimization: A Heuristic Approach (2007)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1028206)
+
++ [Markowitz, H.; Starer, D.; Fram, H.; Gerber, S. (2019). Avoiding the Downside.](https://www.hudsonbaycapital.com/documents/FG/hudsonbay/research/599440_paper.pdf)
 
 
 ### Conditional Value at Risk
@@ -125,8 +133,11 @@
 + Stochastic Portfolio Theory:A Machine Learning Perspective: https://arxiv.org/pdf/1605.02654.pdf
 + https://quantdare.com/stochastic-portfolio-theory-revisited/
 + Fernholz, R., Karatzas, I. https://www.math.columbia.edu/~ik/FernKarSPT.pdf
++ Diversification, volatility, and surprising alpha (2019) https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3522675
 
 + Functionally Generated Portfolios inStochastic Portfolio Theory (2020), PHd Thesis, https://discovery.ucl.ac.uk/id/eprint/10091489/1/main.pdf
+
+
 
 
 #### Hierarchial Risk Parity related

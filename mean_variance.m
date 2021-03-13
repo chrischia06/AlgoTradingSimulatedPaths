@@ -40,7 +40,6 @@ function simObj = mean_variance(simObj, lambda)
         else
             if mod(i, rebalancing_periods) == 0
                 rets = diff(log(simObj.s_hist(:,1:i)),1,2);
-
                 mean_rets = mean(rets,2);
                 % H, f, A, b, Aeq, beq, lb, ub
                 % w E[R] - lambda wCw; 1/2lambdaE[R] - lambda w Cw

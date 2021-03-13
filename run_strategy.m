@@ -9,22 +9,22 @@ close all hidden;
 % 4. Set hyperparameter string
 
 % description = "PCA optimisation, warmup = 100, rebalancing_freq = 100, k = 5, T = 500 runs, lambda=100";
-description = "Follow the leader";
+description = "Semicovariance";
 filename = 'logs/' + description + '-' +...
            string(datetime(now,'ConvertFrom','datenum'));
 
 %hyperparams
 lambda = 5;
     
-% warmup = 100;
-% frequency = 50;
-% chosen_strategy = @(x)mad_optimisation(x, lambda, warmup, frequency);
-% hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
+warmup = 100;
+frequency = 50;
+chosen_strategy = @(x)semicovariance(x, lambda, warmup, frequency);
+hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
 
-frequency = 30;
-warmup = 50;
-chosen_strategy = @(x)follow_leader(x, lambda, warmup, frequency);
-hyperparams = "frequency = 30, warmup = 50";
+% frequency = 30;
+% warmup = 50;
+% chosen_strategy = @(x)semicovariance(x, lambda, warmup, frequency);
+% hyperparams = "frequency = 30, warmup = 50";
 % hyperparams = "frequency = 1";
 %% Set Parameters
 
