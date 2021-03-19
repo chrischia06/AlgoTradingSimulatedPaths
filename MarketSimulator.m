@@ -5,6 +5,7 @@ classdef MarketSimulator < handle
       t {mustBeInteger,mustBeNonnegative}
       r_hist(:,1) {mustBeReal}
       R_hist(:,1) {mustBeReal}
+      P_hist(:,1) {mustBeReal}
       r_cur {mustBeReal,mustBeFinite}
       s0(:,1) {mustBeReal,mustBeFinite,mustBeNonnegative}
       s_hist(:,:) {mustBeReal}
@@ -49,6 +50,7 @@ classdef MarketSimulator < handle
          obj.s_hist = NaN(obj.d,obj.T + 1);
          obj.w_hist = NaN(obj.d,obj.T);
          obj.r_hist = NaN(1,obj.T);
+         obj.P_hist = NaN(1,obj.T);
          obj.R_hist = NaN(1,obj.T);
          obj.s_cur = obj.s0;
          obj.s_hist(:,1) = obj.s0;
@@ -72,18 +74,22 @@ classdef MarketSimulator < handle
          obj.w_cur = w;
          obj.w_hist(:,obj.t) = obj.w_cur;
          if obj.t==1
-             w_delta = 0;
+             u_delta = 0; % Updated 3-18-21: change in positions
+             obj.P_hist(obj.t)=1;
          else
-             w_delta = obj.w_cur - obj.w_hist(:,obj.t-1);
+             obj.P_hist(obj.t)=(1+obj.r_hist(obj.t-1,:)).*obj.P_hist(obj.t-1);
+             u_cur = obj.w_cur.*obj.P_hist(obj.t)./obj.s_cur;
+             u_last = obj.w_hist(:,obj.t-1).*obj.P_hist(obj.t-1)./obj.s_hist(:,obj.t-1);
+             u_delta = u_cur - u_last; % Updated 3-18-21: change in positions
          end
          % Generate stock-price increments and calculate stock return
          xi_cur = normrnd(0,1,obj.d,1);
          s_last = obj.s_cur;
-         obj.s_cur = obj.genPriceStep(obj.s_cur,w_delta,xi_cur);
+         obj.s_cur = obj.genPriceStep(obj.s_cur,u_delta,xi_cur); % Updated 3-18-21: takes change in positions rather than changes in weights
          obj.s_hist(:,obj.t+1) = obj.s_cur;
          r_s_cur = (obj.s_cur-s_last)./s_last;
          % Calculate new portfolio return
-         obj.r_cur = dot(obj.w_cur,r_s_cur) - obj.eta*norm(w_delta,1);
+         obj.r_cur = dot(obj.w_cur,r_s_cur) - obj.eta*norm(u_delta,1); % Updated 3-18-21: takes change in positions rather than changes in weights
          obj.r_hist(obj.t,:) = obj.r_cur;
          obj.R_hist(obj.t,:) = obj.getTotalReturn(obj.r_hist);
       end
@@ -110,13 +116,13 @@ classdef MarketSimulator < handle
       end
    end
    methods (Access = private) % log stock price dynamics under market impact
-       function snew = genPriceStep(obj,s,dw,xi)
+       function snew = genPriceStep(obj,s,du,xi) % 3-18-21: Changed to accept du
            S = log(s);
-           dS = obj.mu + obj.mktImpact(dw) + obj.M * xi;
+           dS = obj.mu + obj.mktImpact(du) + obj.M * xi;
            snew = exp(S + dS);
        end
-       function imp = mktImpact(obj,dw) %kappa function
-           imp = obj.c .* sign(dw) .* sqrt(abs(dw));
+       function imp = mktImpact(obj,du) %kappa function % 3-18-21: Changed to accept du
+           imp = obj.c .* sign(du) .* sqrt(abs(du));
        end
    end
 end

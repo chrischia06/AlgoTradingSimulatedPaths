@@ -34,7 +34,10 @@ Contributors: [Sandra Ng](https://github.com/sandrangying), [Chris Chia](https:/
 + `exp_grad_mult.m` - exponential gradient, multiplicative update
 + `exp_grad_max.m` - exponential gradient, expectation maximisation
 
+#### In Progresss / To Add
 
++ Entropic VaR
++ Conditional Drawdown at Risk
 
 ### Code References
 

@@ -8,24 +8,23 @@ close all hidden;
 % 3. Change chosen_strategy
 % 4. Set hyperparameter string
 
-% description = "PCA optimisation, warmup = 100, rebalancing_freq = 100, k = 5, T = 500 runs, lambda=100";
-description = "Semicovariance";
+description = "Current Price Weighted";
 filename = 'logs/' + description + '-' +...
            string(datetime(now,'ConvertFrom','datenum'));
 
 %hyperparams
 lambda = 5;
     
-warmup = 100;
-frequency = 50;
-chosen_strategy = @(x)semicovariance(x, lambda, warmup, frequency);
-hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
+% warmup = 100;
+% frequency = 50;
+% chosen_strategy = @(x)proportional(x, lambda, warmup, frequency);
+% hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
 
 % frequency = 30;
 % warmup = 50;
-% chosen_strategy = @(x)semicovariance(x, lambda, warmup, frequency);
+chosen_strategy = @(x)one_over_n(x, lambda);
 % hyperparams = "frequency = 30, warmup = 50";
-% hyperparams = "frequency = 1";
+hyperparams = "frequency = 1";
 %% Set Parameters
 
 % seed
@@ -173,16 +172,16 @@ grid on;
 title('Stock Price Evolution')
 
 % Plot portfolio weights
-figure('Name','Portfolio Weight Evolution');
+figure('Name','Portfolio Weight Evolution (Proportion)');
 plot(1:T,sim_obj.w_hist);
 grid on;
 title('Portfolio Weight Evolution')
 
-% % Plot portfolio proportion
-figure('Name','Proportion in each asset');
-plot([sim_obj.s_hist(:,1:T) .* sim_obj.w_hist(:,1:T) sim_obj.w_hist(:,T) .* sim_obj.s_hist(:,T +1)]');
+% Plot portfolio proportion
+figure('Name','Number of Units');
+plot(sim_obj.P_hist .* (sim_obj.w_hist(:,1:T) ./ sim_obj.s_hist(:,1:T))')
 grid on;
-title('Proportions in each stock')
+title('Number of Units in each stock')
 
 % Plot portfolio 1-period returns + mean
 figure('Name','Portfolio 1-Period-Return Evolution');

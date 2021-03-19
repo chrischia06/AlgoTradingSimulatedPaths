@@ -13,7 +13,13 @@
 
 + Machine Learning in Finance, Halperin, Dixon, Bilokon (2020)
 
+#### Online Portfolio Selection
 
++ [Universal Portfolios, Cover (1996)](http://web.mit.edu/6.454/www/www_fall_2001/shaas/universal_portfolios.pdf) and a [PHD's Blogpost](https://andrewcharlesjones.github.io/posts/2020/01/universalportfolios/)
+
++ https://github.com/Marigold/universal-portfolios
+
++ https://github.com/OLPS/OLPS
 
 #### Portfolio Optimisation, Online Portfolio Optimisation
 
@@ -25,9 +31,9 @@
 
 + [Risk Parity Portfolio tutorial](https://www.youtube.com/watch?v=xb1Xxf5LQks)
 
-+ [Universal Portfolios, Cover (1996)](http://web.mit.edu/6.454/www/www_fall_2001/shaas/universal_portfolios.pdf) and a [PHD's Blogpost](https://andrewcharlesjones.github.io/posts/2020/01/universalportfolios/)
 
-+ Introduction to Online Convex Optimization https://arxiv.org/pdf/1909.05207.pdf
+
+
 
 + Genetic Algorithms https://github.com/tradytics/eiten/blob/master/strategies/genetic_algo_strategy.py
 
@@ -39,16 +45,26 @@
 
 + [In Defense of Optimization: The Fallacy of 1/N](https://www.jstor.org/stable/27809177)
 
++ [Portfolio Optimisation within a Wasserstein Ball](https://arxiv.org/abs/2012.04500)
+
++ [Complex Valued Risk Diversification](https://arxiv.org/pdf/1810.04370.pdf)
+
+
+
 ### Online Portfolio Selection
 
 + [Online Portfolio Selection: A Survey, Li, Hoi (2012)](https://arxiv.org/pdf/1212.2129.pdf)
 
 + [Online Convex Optimizationfor Portfolio Management](https://marinballu.github.io/papers/OCO_Ballu19.pdf)
 
++ Introduction to Online Convex Optimization https://arxiv.org/pdf/1909.05207.pdf
+
 
 + [Adaptive Bayesian Optimisation for Online Portfolio Selection (2015)](https://www.robots.ox.ac.uk/~sjrob/Pubs/NyikosaOsborneRobertsNipsBayesopt2015.pdf)
 
 + https://hudson-and-thames-portfoliolab.readthedocs-hosted.com/en/latest/online_portfolio_selection/momentum.html
+
++ [Open Problem: Fast and Optimal Online Portfolio Selection](http://proceedings.mlr.press/v125/van-erven20a/van-erven20a.pdf)
 
 ### Semivariance
 
@@ -61,9 +77,13 @@ Aims at minimising the downside variation
 
 ### Conditional Value at Risk
 
-+ [Performance-based regularizationinmean-CVaR portfolio optimization (2018)](https://arxiv.org/pdf/1111.2091.pdf)
-
 + [Optimization of conditional value-at-risk (2000)](https://www.ise.ufl.edu/uryasev/files/2011/11/CVaR1_JOR.pdf)
+
++ [Performance-based regularization in mean-CVaR portfolio optimization (2018)](https://arxiv.org/pdf/1111.2091.pdf)
+
+
+
++ [RM-CVaR: Regularized Multiple β-CVaR Portfolio](https://arxiv.org/abs/2004.13347)
 
 ### Conditional Drawdown at Risk
 + [PORTFOLIO OPTIMIZATION WITH DRAWDOWN CONSTRAINTS (2003)](https://www.ise.ufl.edu/uryasev/files/2011/11/drawdown.pdf) - introduces Conditional Drawdown at risk
@@ -144,6 +164,11 @@ Aims at minimising the downside variation
 + The Hierarchical Equal Risk Contribution Portfolio https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3237540
 
 + Hierarchical Clustering Based Asset Allocation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2840729
+
+
+
++ Asset Allocation Strategy with Non-Hierarchical Clustering Risk Parity Portfolio https://www.scirp.org/journal/paperinformation.aspx?paperid=103344
+
 
 #### Graph Theoretical
 
