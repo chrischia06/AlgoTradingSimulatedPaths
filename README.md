@@ -45,10 +45,9 @@ Sjöstrand, K., Clemmensen, L., Larsen, R., Einarsson, G., & Ersbøll, B. (2018)
 
 + https://www.jstatsoft.org/article/view/v084i10
 
-Ledoit, O. and Wolf, M.
-Quadratic shrinkage for lage covariance matrices.
+**Ledoit, O. and Wolf, M. Quadratic shrinkage for lage covariance matrices.**
 
-+ https://www.econ.uzh.ch/en/people/faculty/wolf/publications.html#9
++ Corresponding code from: https://www.econ.uzh.ch/en/people/faculty/wolf/publications.html#9
 
  Asset Allocation - Hierarchical Risk Parity 
 

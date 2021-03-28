@@ -8,7 +8,7 @@ close all hidden;
 % 3. Change chosen_strategy
 % 4. Set hyperparameter string
 
-description = "hierarchial";
+description = "Mean Correlation";
 filename = 'logs/' + description + '-' +...
            string(datetime(now,'ConvertFrom','datenum'));
 
@@ -17,7 +17,7 @@ lambda = 0.1;
     
 warmup = 100;
 frequency = 50;
-chosen_strategy = @(x)hierarchial(x, lambda, warmup, frequency);
+chosen_strategy = @(x)mean_variance(x, lambda, warmup, frequency);
 hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
 
 % frequency = 30;

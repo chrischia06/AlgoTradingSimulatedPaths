@@ -1,4 +1,4 @@
-function simObj = ridge_shrinkage(simObj, lambda)
+function simObj = ridge_shrinkage(simObj, lambda, warmup, frequency)
     simObj.reset(); % reset simulation environment
     if nargin < 2
         lambda = 0.5;
@@ -23,9 +23,7 @@ function simObj = ridge_shrinkage(simObj, lambda)
     % ccc_mvgarch, dcc, rarch, gogarch, PCA/Factor
     % Don't really seem to work
     %%
-    rebalancing_periods = max(simObj.T / 5, 10);
     options = optimset('Display', 'off');
-    warmup = 100;
     min_weight = 0.9 / simObj.d;
     max_weight = 1.1 / simObj.d;
     min_weight = 0;
@@ -34,7 +32,7 @@ function simObj = ridge_shrinkage(simObj, lambda)
         if i < warmup
             w_const = ones(simObj.d,1)/simObj.d;
         else
-            if mod(i, rebalancing_periods) == 0
+            if mod(i, frequency) == 0
                 rets = diff(log(simObj.s_hist(:,1:i)),1,2)';
 %                 rets = rets - mean(rets,2);
                 shrinked_cov = cov(rets) + 2 * lambda * diag(ones(simObj.d, 1));

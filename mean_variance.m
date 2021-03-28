@@ -1,4 +1,4 @@
-function simObj = mean_variance(simObj, lambda)
+function simObj = mean_variance(simObj, lambda, warmup, frequency)
     simObj.reset(); % reset simulation environment
     %% general
     % mean variance / minimum variance portfolio
@@ -31,14 +31,13 @@ function simObj = mean_variance(simObj, lambda)
 
     max_weight = 1.1 / simObj.d;
     min_weight = 0.9 / simObj.d;
-    warmup = 100;
     
     % min 0.5 w^{T}Hw + f^{t} w , Aw <= . b, Aeqw = beq, lb<= w <= ub
     for i=1:simObj.T
         if i < warmup
             w_const = ones(simObj.d,1)/simObj.d;
         else
-            if mod(i, rebalancing_periods) == 0
+            if mod(i, frequency) == 0
                 rets = diff(log(simObj.s_hist(:,1:i)),1,2);
                 mean_rets = mean(rets,2);
                 % H, f, A, b, Aeq, beq, lb, ub

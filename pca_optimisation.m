@@ -1,4 +1,4 @@
-function simObj = pca_optimisation(simObj, lambda)
+function simObj = pca_optimisation(simObj, lambda, warmup, frequency)
     if nargin < 2
         lambda = 0.5;
     end
@@ -6,10 +6,8 @@ function simObj = pca_optimisation(simObj, lambda)
     % then use mean-variance (Quadratic) optimisation
     simObj.reset(); % reset simulation environment
     % rebalance 5 times, or every 10 periods
-    rebalancing_periods = max(simObj.T / 5, 10); 
     options = optimset('Display', 'off');
-    warmup = 100;
-    k = fix(simObj.d / 10); % number of factors
+    k = max(fix(simObj.d / 10), 3); % number of factors
     
     min_weights = zeros(1, simObj.d);
     max_weights = ones(1, simObj.d);
@@ -18,7 +16,7 @@ function simObj = pca_optimisation(simObj, lambda)
         if i < warmup
             w_const = ones(simObj.d,1)/simObj.d;
         else
-            if mod(i, rebalancing_periods) == 0
+            if mod(i, frequency) == 0
                 rets = diff(log(simObj.s_hist(:,1:i)),1,2);
                 [ws, pcs] = pca(rets');
                 errors = rets' - (pcs(:,1:k) * ws(1:k,:));
