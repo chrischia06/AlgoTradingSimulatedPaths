@@ -34,13 +34,13 @@ jobs:
             result['SD RT'] = result['Var RT'].apply(lambda x: x ** 0.5)
             result['Utility'] = result['Mean RT'] - result['Lambda'] * result['Var RT']
             result2 = result.apply(lambda x: round(x, 4) if x.dtype != "object" else x)
-            columns = ['description','hyperparams', 'Lambda','Mean RT', 'SD RT', 'Utility']
+            columns = ['hyperparams', 'Lambda','Mean RT', 'SD RT', 'Utility']
             result2['description'] = result2['description'].apply(lambda x: x[:-25])
             result2 = result2.sort_values(by=['description','Lambda'])
             result2['hyperparams'] = result2['hyperparams'].apply(lambda x: x.replace("warmup", "t_{w}"))
             result2['hyperparams'] = result2['hyperparams'].apply(lambda x: x.replace("frequency", "f"))
             result2 = result2.set_index("description")
-            result2[columns].to_latex('result_latex2.txt', index=False, escape=False)
+            result2[columns].to_latex('result_latex2.txt', index=True, escape=False)
       - name: Commit rendered files
         run: |
           git config --global user.name "bot"

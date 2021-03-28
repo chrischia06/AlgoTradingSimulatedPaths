@@ -8,7 +8,7 @@ close all hidden;
 % 3. Change chosen_strategy
 % 4. Set hyperparameter string
 
-description = "Mean Correlation";
+description = "Inverse Volatility Weighted";
 filename = 'logs/' + description + '-' +...
            string(datetime(now,'ConvertFrom','datenum'));
 
@@ -16,8 +16,8 @@ filename = 'logs/' + description + '-' +...
 lambda = 0.1;
     
 warmup = 100;
-frequency = 50;
-chosen_strategy = @(x)mean_variance(x, lambda, warmup, frequency);
+frequency = 1;
+chosen_strategy = @(x)volatility_weighted(x, lambda, warmup, frequency);
 hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
 
 % frequency = 30;
