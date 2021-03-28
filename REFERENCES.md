@@ -31,6 +31,7 @@
 
 + [Risk Parity Portfolio tutorial](https://www.youtube.com/watch?v=xb1Xxf5LQks)
 
++ **M. Schweizer, D. Zivoi and M. Šikić (2018) "Dynamic Mean-Variance Optimisation Problems with Deterministic Information" International Journal of Theoretical and Applied Finance 21, 1850011-1-38** https://people.math.ethz.ch/~mschweiz/Files/SZS-detinfo-final.pdf
 
 
 
@@ -48,6 +49,8 @@
 + [Portfolio Optimisation within a Wasserstein Ball](https://arxiv.org/abs/2012.04500)
 
 + [Complex Valued Risk Diversification](https://arxiv.org/pdf/1810.04370.pdf)
+
++ [Thomas Caye, PHD Thesis](https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/155519/eth-48818-02.pdf?sequence=2&isAllowed=y)
 
 
 
@@ -148,6 +151,8 @@ Aims at minimising the downside variation
 + Optimal Versus Naive Diversification: How Inefficient is the 1/N Portfolio Strategy http://faculty.london.edu/avmiguel/DeMiguel-Garlappi-Uppal-RFS.pdf
 
 + Derek Snow, Machine Learning in Asset Management (2019)
+
++ https://raw.githubusercontent.com/jsg71/MRes-Thesis/master/MRes_Thesis_JGoodacre.pdf
 
 #### Stochastic Portfolio Theory
 + Stochastic Portfolio Theory:A Machine Learning Perspective: https://arxiv.org/pdf/1605.02654.pdf

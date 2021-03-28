@@ -1,4 +1,4 @@
-function simObj = cdar_optimisation(simObj,lambda)
+function simObj = cdar_optimisation(simObj,lambda, warmup, frequency)
     % conditional drawdown at risk
     % from https://github.com/Siberia-yuan/CDaR-Portfolio/blob/master/CDaRPortfolio.m
     % https://uk.mathworks.com/matlabcentral/answers/231144-how-to-implement-conditional-drawdown-at-risk-with-linear-programming
@@ -6,18 +6,16 @@ function simObj = cdar_optimisation(simObj,lambda)
         lambda = 0.5;
     end
    
-    warmup = 50;
     simObj.reset(); % reset simulation environment
     options = optimset('Display','Off');
     warning('off');
     min_weight_per_asset    = 0.00; % default
     max_weight_per_asset    = 1.00; % default
     constrain = 0.15;
-    rebalancing_periods = max(simObj.T / 5, 10);
     for i=1:simObj.T
         if i < warmup
             w_const = ones(simObj.d,1)/simObj.d;
-        elseif mod(i, rebalancing_periods) == 0
+        elseif mod(i, frequency) == 0
             cumuSum=zeros(i,simObj.d);
             records=zeros(1,simObj.d);
             rets = diff(log(simObj.s_hist(:,1:i)),1,2)';

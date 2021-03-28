@@ -8,23 +8,23 @@ close all hidden;
 % 3. Change chosen_strategy
 % 4. Set hyperparameter string
 
-description = "Current Price Weighted";
+description = "hierarchial";
 filename = 'logs/' + description + '-' +...
            string(datetime(now,'ConvertFrom','datenum'));
 
 %hyperparams
-lambda = 5;
+lambda = 0.1;
     
-% warmup = 100;
-% frequency = 50;
-% chosen_strategy = @(x)proportional(x, lambda, warmup, frequency);
-% hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
+warmup = 100;
+frequency = 50;
+chosen_strategy = @(x)hierarchial(x, lambda, warmup, frequency);
+hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
 
 % frequency = 30;
 % warmup = 50;
-chosen_strategy = @(x)one_over_n(x, lambda);
-% hyperparams = "frequency = 30, warmup = 50";
-hyperparams = "frequency = 1";
+% chosen_strategy = @(x)one_over_n(x, lambda);
+% % hyperparams = "frequency = 30, warmup = 50";
+% hyperparams = "frequency = 1";
 %% Set Parameters
 
 % seed

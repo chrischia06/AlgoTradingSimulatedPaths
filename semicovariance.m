@@ -32,12 +32,12 @@ function simObj = semicovariance(simObj, lambda, warmup, frequency)
                 B = rets / sqrt(i); % d x t matrix
                 % [1^T x w + 0^Tp 0^Tn] = 1
                 % [Bx - p + n]
-                b_size = size(B) %
+                b_size = size(B); %
                 Aeq = [ones(1, simObj.d) zeros(1, 2 * (i - 1));...
                        B' -ones(i - 1, i - 1) ones(i - 1, i - 1)];
-                aeq_size = size(Aeq)
+                aeq_size = size(Aeq);
                 beq = [1; zeros(i - 1, 1)];
-                beq_size = size(beq)
+                beq_size = size(beq);
                      
                 lb = [zeros(1, simObj.d + 2 * (i - 1))]; % d + 2t
                 H = [zeros(simObj.d + i - 1, simObj.d + (2 * (i - 1)));...
