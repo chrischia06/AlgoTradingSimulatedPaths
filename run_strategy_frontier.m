@@ -4,13 +4,18 @@ close all hidden;
 
 %%% Set Strategy Here
 % description = "";
-description = "Proportionally weighted, warmup = 100, rebalancing_freq = 100, k = 5, T = 500 runs, lambda=100";
+description = "Semivariance";
 
 filename = ('logs/frontier/' + description + ' ' +...
             string(datetime(now,'ConvertFrom','datenum')));
         
-chosen_strategy = @pca_optimisation;
-lambda_grid = (0.5:0.25:5)';
+warmup = 100;
+frequency = 50;
+% lower_bound = 0;
+% upper_bound = 1;
+chosen_strategy = @semicovariance;
+hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
+lambda_grid = [0.3 0.4 0.6 0.7 0.8 0.9]';
 N_lambdas = size(lambda_grid, 1);
 %%%
 %% Define Parameters Here
@@ -65,6 +70,8 @@ running_time = toc;
 mean_strat = mean(terminal_rets, 2);
 var_strat = var(terminal_rets,0 ,2);
 std_strat = sqrt(var_strat);
+skew_strat =skewness(terminal_rets, [],2);
+kurt_strat = kurtosis(terminal_rets, [], 2);
 loss_values = mean_strat - lambda_grid .* var_strat;
 
 % efficient frontier
@@ -72,7 +79,7 @@ loss_values = mean_strat - lambda_grid .* var_strat;
 best = [];
 temp = 0;
 for j = 1:length(vals)
-    if vals(j, 1) > temp
+    if vals(j) > temp
         temp = vals(j, 1);
         best = [best j];
     end
@@ -109,8 +116,8 @@ title('Mean[R], Std[R] against Lambda')
 saveas(gcf,filename + '-Mean-Std.png')
 
 
-loss_values_table = array2table([lambda_grid  loss_values mean_strat std_strat]',...
-                          'RowNames', {'Lambda', 'Loss','E[R]','Std[R]'})
+loss_values_table = array2table([lambda_grid  loss_values mean_strat std_strat skew_strat kurt_strat],...
+                          'VariableNames', {'Lambda', 'Loss','E[R]','Std[R]','Skew[R]', 'Kurt[R]'})
 writetable(loss_values_table, filename + '.txt');
 latex(vpa([lambda_grid loss_values], 4))
 

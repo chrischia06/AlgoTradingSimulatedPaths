@@ -8,7 +8,7 @@ close all hidden;
 % 3. Change chosen_strategy
 % 4. Set hyperparameter string
 
-description = "Inverse Volatility Weighted";
+description = "Semivariance";
 filename = 'logs/' + description + '-' +...
            string(datetime(now,'ConvertFrom','datenum'));
 
@@ -16,9 +16,14 @@ filename = 'logs/' + description + '-' +...
 lambda = 0.1;
     
 warmup = 100;
-frequency = 1;
-chosen_strategy = @(x)volatility_weighted(x, lambda, warmup, frequency);
+frequency = 50;
+% lower_bound = 0;
+% upper_bound = 1;
+chosen_strategy = @(x)semicovariance(x, lambda, warmup,frequency);
 hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
+
+% number of runs
+N = 500;
 
 % frequency = 30;
 % warmup = 50;
@@ -30,8 +35,6 @@ hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
 % seed
 rng(2021);
 
-% number of runs
-N = 500; 
 % N = 1; % for testing
 
 % Market Model Parameters
