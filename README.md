@@ -12,32 +12,50 @@ Contributors: [Sandra Ng](https://github.com/sandrangying), [Chris Chia](https:/
 
 ### Currently Implemented / Work in Progress
 
-+ `one_over_n.m` - one-over-n weighted strategy
+**Model Free**
+
++ `one_over_n.m` - one-over-n (in units of each asset held)
++ `proportional` - one-over-n (in proportions)
 
 **Portfolio Optimisation**
 
-+ `semicovariance.m` - Risk Parity approach using semivariance (as a quadratic optimisation problem)
-+ `ridge_shrinkage.m` - Risk Parity approach, adding lambda I to estimated covariance matrix and applying quadratic optimisation	
 + `mean_variance.m` - standard Markowitz Mean-Variance Portfolio Optimisation
-+ `mean_correlation.m` - Risk parity approach, using correlation matrix instead of covariance
-+ `hierarchial.m` - Hierarchial Risk Parity
++ `ridge_shrinkage.m` - Add lambda I to estimated covariance matrix and applying quadratic optimisation	
 + `pca_optimisation.m` - Construct covariance matrix from PCA factors, and use in quadratic Optimisation
++ `ledoit_wolf.m` - Ledoit and Wolf's Quadratic Shrinkage estimator
++ `mean_correlation.m` - Risk parity approach, using correlation matrix instead of covariance
+
+
+**Risk Parity**
+
++ `volatility_weighted.m` - Inverse volatility weighted
++ `hierarchial.m` - Hierarchial Risk Parity
+
+
+**Downside Risk Measures**
+
++ `semicovariance.m` - Risk Parity approach using semivariance (as a quadratic optimisation problem)
 + `cvar_optimisation.m` - CVaR portfolio optimisation as a linear programming problem
 + `mad_optimisation.m` - MAD portfolio optimisation as a linear programming problem
 
 **Momentum**
 + `current_price_weighted.m` - current price-Weighted Strategy
-+ `macd` - allocate weights based on MACD oscillator
++ `macd.m` - allocate weights based on MACD oscillator
++ `classification.m` = allocate weights based on prediction of *sign*
++ `reg.m` = allocate weights based on prediction of *returns*
+
 
 **Online**
 + `exp_grad_proj.m` - exponential gradient, projective update
 + `exp_grad_mult.m` - exponential gradient, multiplicative update
 + `exp_grad_max.m` - exponential gradient, expectation maximisation
++ `follow_leader.m` - Follow the (regularised) leader
 
 #### In Progresss / To Add
 
-+ Entropic VaR
-+ Conditional Drawdown at Risk
++ Conditional Drawdown at Risk `cdar_optimisation.m`
++ Entropic VaR 
+
 
 ### Code References
 

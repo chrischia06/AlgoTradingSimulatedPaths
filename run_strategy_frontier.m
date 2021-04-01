@@ -15,7 +15,7 @@ frequency = 50;
 % upper_bound = 1;
 chosen_strategy = @semicovariance;
 hyperparams = sprintf("warmup = %d, frequency = %d", warmup, frequency);
-lambda_grid = [0.3 0.4 0.6 0.7 0.8 0.9]';
+lambda_grid = [1.25 1.5 1.75 2.25 2.5 3.75]';
 N_lambdas = size(lambda_grid, 1);
 %%%
 %% Define Parameters Here
@@ -121,3 +121,50 @@ loss_values_table = array2table([lambda_grid  loss_values mean_strat std_strat s
 writetable(loss_values_table, filename + '.txt');
 latex(vpa([lambda_grid loss_values], 4))
 
+%% MERGE TABLES
+% t1 = readtable("logs/frontier/Semivariance 29-Mar-2021 11:09:15.txt")
+% t2 = readtable("logs/frontier/Semivariance 29-Mar-2021 12:51:28.txt")
+% t3 = readtable("logs/frontier/Semivariance 29-Mar-2021 14:43:13.txt")
+% t_final = sortrows([t1 ; t2; t3])
+% 
+% [vals, idx] = sortrows([t_final.E_R_ t_final.Std_R_], 2);
+% best = [];
+% temp = 0;
+% for j = 1:length(vals)
+%     if vals(j) > temp
+%         temp = vals(j, 1);
+%         best = [best j];
+%     end
+% end
+% 
+% figure()
+% scatter(t_final.Std_R_, t_final.E_R_);
+% hold on;
+% plot(vals(best,2), vals(best,1))
+% grid on;
+% xlabel("Std Deviation");
+% ylabel("Mean Return");
+% % yline(0, 'r--')
+% title('Monte Carlo Efficient Frontier')
+% saveas(gcf,filename + '-Efficient-Frontier.png')
+% 
+% 
+% 
+% figure()                   
+% plot(t_final.Lambda, t_final.Loss)
+% grid on;
+% xlabel('Lambda');
+% ylabel('Quadratic Utility');
+% title('Quadratic Utility Lambda');
+% saveas(gcf,filename + '-Utility-Curve.png')
+% 
+% figure('Name', 'Mean[R], Std[R] against Lambda')
+% yyaxis left
+% plot(t_final.Lambda, t_final.E_R_)
+% grid on;
+% ylabel('E[R | lambda]')
+% yyaxis right
+% plot(t_final.Lambda, t_final.Std_R_)
+% ylabel('Std[R | lambda]')
+% title('Mean[R], Std[R] against Lambda')
+% saveas(gcf,filename + '-Mean-Std.png')

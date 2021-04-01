@@ -117,7 +117,13 @@ Aims at minimising the downside variation
 
 + [DRAWDOWN MEASURE IN PORTFOLIO OPTIMIZATION (2005)](https://econpapers.repec.org/article/wsiijtafx/v_3a08_3ay_3a2005_3ai_3a01_3an_3as0219024905002767.htm)
 
+
++ Fastrich,  Björn,  Sandra  Paterlini,  and  Peter  Winker.   2015.Constructing  optimal  sparse  portfolios  usingregularization methods.
+
 #### Using Machine Learning
+
++ Can Machine Learning-Based Portfolios OutperformTraditional Risk-Based Portfolios? The Need toAccount for Covariance Misspecification
+
 + https://discovery.ucl.ac.uk/id/eprint/1474136/1/PhDThesis_ToyinAwoye.pdf
 
 + https://github.com/AnnaSkarpalezou/Portfolio-Optimization-using-Machine-Learning
@@ -129,6 +135,8 @@ Aims at minimising the downside variation
 + Intelligent Portfolio Construction:Machine-Learning enabled Mean-VarianceOptimization https://www.imperial.ac.uk/media/imperial-college/faculty-of-natural-sciences/department-of-mathematics/math-finance/Ghali_Tadlaoui_01427211.pdf
 
 + Deep Learning for Portfolio Optimization https://arxiv.org/abs/2005.13665
+
++ DELAFO:An Efficient Portfolio Optimization Using Deep Neural Networks https://github.com/caokyhieu/DELAFO-DeEp-Learning-Approach-for-portFolio-Optimization https://link.springer.com/chapter/10.1007/978-3-030-47426-3_48
 
 + Machine Learning OptimizationAlgorithms & Portfolio Allocation http://www.thierry-roncalli.com/download/Machine_Learning_Optimization.pdf
 
@@ -195,6 +203,8 @@ Aims at minimising the downside variation
 + Honey I shrunk the covariance matrix http://www.ledoit.net/honey.pdf
 
 + Bouchaud-Potters-Bun random matrix theory, Cleaning large correlation matrices: tools from random matrix theory
+
++ Zakamulin, Valeriy. 2015.  A test of covariance-matrix forecasting methods.
 
 #### Rank Deficient Matrices
 
