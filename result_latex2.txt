@@ -21,6 +21,7 @@ Proportional                &                f = 1 &     0.1 &   0.0115 &  0.008
 Ridge Shrinkage             &  t_{w} = 100, f = 50 &     0.1 &   0.0115 &  0.0080 &   0.0115 \\
 Semivariance                &  t_{w} = 100, f = 50 &     0.1 &   0.0261 &  0.0076 &   0.0260 \\
 Semivariance                &  t_{w} = 100, f = 50 &     0.1 &   0.0261 &  0.0076 &   0.0260 \\
+Semivariance                &  t_{w} = 100, f = 50 &     0.1 &   0.0261 &  0.0076 &   0.0260 \\
 cvar_optimisation           &  t_{w} = 100, f = 50 &     0.1 &   0.0123 &  0.0054 &   0.0123 \\
 hierarchial                 &  t_{w} = 100, f = 50 &     0.1 &   0.0108 &  0.0071 &   0.0108 \\
 \bottomrule
