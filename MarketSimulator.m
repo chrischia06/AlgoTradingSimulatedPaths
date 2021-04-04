@@ -84,6 +84,7 @@ classdef MarketSimulator < handle
          end
          % Generate stock-price increments and calculate stock return
          xi_cur = normrnd(0,1,obj.d,1);
+%          xi_cur = 1 / sqrt(2)  * trnd(4, obj.d, 1);
          s_last = obj.s_cur;
          obj.s_cur = obj.genPriceStep(obj.s_cur,u_delta,xi_cur); % Updated 3-18-21: takes change in positions rather than changes in weights
          obj.s_hist(:,obj.t+1) = obj.s_cur;

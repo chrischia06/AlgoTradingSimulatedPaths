@@ -24,7 +24,7 @@ function simObj = semicovariance(simObj, lambda, warmup, frequency)
             % and positive, negative returns of the portfolio
             x = [ones(1, simObj.d)/simObj.d zeros(1, 2 * (i - 1))];
         else
-            if mod(i, frequency) == 0
+            if mod(i - warmup, frequency) == 0
                 
                 rets = diff(log(simObj.s_hist(:,1:i)),1,2); %d x t
                 mean_rets = mean(rets, 2);

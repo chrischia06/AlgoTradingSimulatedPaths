@@ -8,7 +8,7 @@ close all hidden;
 % 3. Change chosen_strategy
 % 4. Set hyperparameter string
 
-description = "Semivariance";
+description = "Semivariance c = 1e-5 eta = 0.02";
 filename = 'logs/' + description + '-' +...
            string(datetime(now,'ConvertFrom','datenum'));
 
@@ -16,7 +16,7 @@ filename = 'logs/' + description + '-' +...
 lambda = 0.1;
     
 warmup = 100;
-frequency = 50;
+frequency = 600;
 % lower_bound = 0;
 % upper_bound = 1;
 chosen_strategy = @(x)semicovariance(x, lambda, warmup,frequency);
@@ -41,13 +41,13 @@ rng(2021);
 % **Clarifications to T, d from Slack Channel
 T = 500; % time horizon
 d = 50; % assets
-eta = 0.0002; % market impact, 0.2%
+eta = 0.02; % proportional transaction cost, 0.2%
 Mrank = floor(0.25*d); % rank of cov
 s0 = 100*ones(d,1); % intial asset prices
     
 % pre-generate mus (drift), cs (transaction proportion), Ms (diffusion)
 mus = 2e-5 * normrnd(0, 1, N, d).^2; % drift 0.002%
-cs = 1e-8 * normrnd(0, 1, N, d).^2; % market impact; non-negative
+cs = 1e-5 * normrnd(0, 1, N, d).^2; % market impact; non-negative
 Ms = zeros(N, d, d); % diffusion
 
 for i = 1:N
@@ -182,7 +182,8 @@ title('Portfolio Weight Evolution')
 
 % Plot portfolio proportion
 figure('Name','Number of Units');
-plot(sim_obj.P_hist .* (sim_obj.w_hist(:,1:T) ./ sim_obj.s_hist(:,1:T))')
+units = sim_obj.P_hist .* (sim_obj.w_hist(:,1:T) ./ sim_obj.s_hist(:,1:T))';
+plot(units);
 grid on;
 title('Number of Units in each stock')
 
@@ -200,6 +201,17 @@ figure('Name','Portfolio Total Return');
 plot(1:T,sim_obj.R_hist-1);
 grid on;
 title('Portfolio Total Return')
+
+%% turnover
+figure('Name', 'One-period position change');
+pos_change = diff(sim_obj.w_hist,1,2);
+plot(pos_change');
+
+% turnover
+figure('Name', 'One-period position total change');
+pos_change = diff(sim_obj.w_hist,1,2);
+total_pos_change = sum(abs(pos_change));
+plot(total_pos_change);
 
 
 %% MISC
